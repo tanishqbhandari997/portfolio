@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Fieldnotes | Karnataka Agriculture</title>
+    <style>
+      * {
+        box-sizing:border-box
+      }
+      body {
+        margin:0;
+        background:#f5f7f3;
+        color:#24342c;
+        font:14px/1.5 Inter,Segoe UI,Arial,sans-serif
+      }
+      .wrap {
+        max-width:1150px;
+        margin:auto;
+        padding:30px 23px
+      }
+      .top {
+        display:flex;
+        justify-content:space-between;
+        align-items:center
+      }
+      .brand {
+        font-weight:800;
+        font-size:21px
+      }
+      .brand span {
+        color:#518365
+      }
+      .top small {
+        color:#748279
+      }
+      .hero {
+        margin:22px 0;
+        background:#244a38;
+        color:white;
+        border-radius:15px;
+        padding:26px 30px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:15px
+      }
+      .hero small {
+        color:#b9d8c5;
+        text-transform:uppercase;
+        letter-spacing:.13em;
+        font-size:10px;
+        font-weight:700
+      }
+      .hero h1 {
+        font-size:clamp(24px,3vw,30px);
+        line-height:1.2;
+        margin:6px 0
+      }
+      .hero p {
+        margin:0;
+        color:#d0e2d5
+      }
+      .filters {
+        display:flex;
+        gap:10px
+      }
+      .filters select {
+        border:1px solid #50745f;
+        background:#30563f;
+        color:white;
+        border-radius:8px;
+        padding:10px 13px;
+        font:inherit
+      }
+      .cards {
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:14px
+      }
+      .card,.panel {
+        background:white;
+        border:1px solid #e6ebe6;
+        border-radius:12px;
+        padding:18px
+      }
+      .card small {
+        color:#7c897f;
+        text-transform:uppercase;
+        font-weight:700;
+        letter-spacing:.07em;
+        font-size:10px
+      }
+      .metric {
+        font-size:25px;
+        font-weight:800;
+        margin:6px 0
+      }
+      .card p {
+        color:#8a958c;
+        font-size:11px;
+        margin:0
+      }
+      .content {
+        display:grid;
+        grid-template-columns:1.2fr .8fr;
+        gap:14px;
+        margin-top:15px
+      }
+      .panel h2 {
+        font-size:16px;
+        margin:0 0 3px
+      }
+      .sub {
+        color:#8a958c;
+        font-size:11px;
+        margin:0 0 18px
+      }
+      .chart {
+        height:200px;
+        border-bottom:1px solid #e8ece8;
+        display:flex;
+        align-items:end;
+        gap:10px;
+        padding:0 5px
+      }
+      .col {
+        height:100%;
+        flex:1;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:end;
+        gap:7px;
+        color:#7e8b81;
+        font-size:10px
+      }
+      .bar {
+        width:min(34px,75%);
+        background:#75af88;
+        border-radius:5px 5px 0 0
+      }
+      .note {
+        background:#f2f8f3;
+        color:#436a4e;
+        padding:14px;
+        border-radius:8px;
+        font-size:12px
+      }
+      .tablewrap {
+        overflow:auto;
+        margin-top:15px
+      }
+      table {
+        width:100%;
+        border-collapse:collapse
+      }
+      td,th {
+        text-align:left;
+        padding:11px;
+        border-bottom:1px solid #eff2ef;
+        font-size:12px
+      }
+      th {
+        font-size:10px;
+        text-transform:uppercase;
+        color:#8a958c
+      }
+      @media(max-width:720px) {
+        .wrap {
+          padding:18px 13px
+        }
+        .hero {
+          align-items:flex-start;
+          flex-direction:column;
+          padding:22px
+        }
+        .cards,.content {
+          grid-template-columns:1fr
+        }
+        .top {
+          align-items:flex-start;
+          flex-direction:column;
+          gap:4px
+        }
+        .filters {
+          width:100%
+        }
+        .filters select {
+          flex:1
+        }
+      }
+</style>
+  </head>
+  <body>
+    <script src="./portfolio-nav.js"></script>
+    <main class="wrap">
+      <header class="top">
+        <div class="brand">
+          fieldnotes<span>.</span>
+        </div>
+        <small>Data exploration · Demo dataset</small>
+      </header>
+      <section class="hero">
+        <div>
+          <small>Karnataka · Agriculture</small>
+          <h1>
+            District yield explorer
+          </h1>
+          <p>
+            Compare example crop yields and explore the district snapshot.
+          </p>
+        </div>
+        <div class="filters">
+          <select id="crop" aria-label="Choose crop"></select><select id="year" aria-label="Choose year"></select>
+        </div>
+      </section>
+      <section class="cards" id="metrics">
+      </section>
+      <section class="content">
+        <article class="panel">
+          <h2>
+            Yield by district
+          </h2>
+          <p class="sub">
+            Tonnes per hectare · illustrative sample figures
+          </p>
+          <div class="chart" id="chart">
+          </div>
+        </article>
+        <article class="panel">
+          <h2>
+            Data notes
+          </h2>
+          <p class="sub">
+            Before drawing conclusions
+          </p>
+          <div class="note">
+            This page uses fictional sample values for a UI demonstration. It is not a live feed or an official agricultural statistic.
+          </div>
+          <p class="sub" style="margin-top:16px">
+            In a real analysis, validate source dates, units, missing values, and district boundaries before comparing yields.
+          </p>
+        </article>
+      </section>
+      <section class="panel tablewrap">
+        <h2>
+          District records
+        </h2>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                District
+              </th>
+              <th>
+                Crop
+              </th>
+              <th>
+                Year
+              </th>
+              <th>
+                Yield (t/ha)
+              </th>
+            </tr>
+          </thead>
+          <tbody id="rows">
+          </tbody>
+        </table>
+      </section>
+    </main>
+    <script>
+const crop=document.querySelector("#crop"),year=document.querySelector("#year");["Maize","Rice"].forEach(x=>crop.add(new Option(x,x)));["2024","2025"].forEach(x=>year.add(new Option(x,x)));year.value="2025";let data=[];
+function render(){const rows=data,avg=rows.reduce((s,d)=>s+d.yield,0)/(rows.length||1),highest=rows.reduce((a,b)=>a.yield>b.yield?a:b,rows[0]);document.querySelector("#metrics").innerHTML=`<article class="card"><small>Districts shown</small><div class="metric">${rows.length}</div><p>Selected crop and year</p></article><article class="card"><small>Average yield</small><div class="metric">${avg.toFixed(2)} <span style="font-size:12px">t/ha</span></div><p>Across visible districts</p></article><article class="card"><small>Highest in sample</small><div class="metric">${highest?highest.district:"—"}</div><p>${highest?highest.yield.toFixed(1)+" tonnes per hectare":"No records"}</p></article>`;
+const chart=document.querySelector("#chart");chart.replaceChildren();const max=Math.max(1,...rows.map(r=>r.yield));rows.forEach(r=>{const c=document.createElement("div");c.className="col";const b=document.createElement("div");b.className="bar";b.style.height=(r.yield/max*155)+"px";b.title=r.yield+" t/ha";const label=document.createElement("span");label.textContent=r.district;c.append(b,label);chart.append(c)});const body=document.querySelector("#rows");body.replaceChildren();rows.forEach(r=>{const tr=document.createElement("tr");[r.district,r.crop,r.year,r.yield.toFixed(1)].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td)});body.append(tr)})}
+const sampleRows=[
+ ["Belagavi","Maize",2024,4.2],["Dharwad","Maize",2024,3.8],["Haveri","Maize",2024,4.5],["Mysuru","Maize",2024,3.6],["Shivamogga","Maize",2024,4.0],
+ ["Belagavi","Maize",2025,4.4],["Dharwad","Maize",2025,4.0],["Haveri","Maize",2025,4.6],["Mysuru","Maize",2025,3.9],["Shivamogga","Maize",2025,4.1],
+ ["Belagavi","Rice",2024,3.7],["Dharwad","Rice",2024,3.2],["Haveri","Rice",2024,3.5],["Mysuru","Rice",2024,4.1],["Shivamogga","Rice",2024,4.4],
+ ["Belagavi","Rice",2025,3.8],["Dharwad","Rice",2025,3.4],["Haveri","Rice",2025,3.6],["Mysuru","Rice",2025,4.3],["Shivamogga","Rice",2025,4.5]
+].map(([district,crop,year,yieldValue])=>({district,crop,year,yield:yieldValue}));
+function loadDataset(){data=sampleRows.filter(row=>row.crop===crop.value&&row.year===Number(year.value));render()}
+crop.addEventListener("change",loadDataset);year.addEventListener("change",loadDataset);loadDataset();
+</script>
+  </body>
+</html>

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Gather | Team Chat</title>
+    <style>
+      * {
+        box-sizing:border-box
+      }
+      body {
+        margin:0;
+        background:#eef1f6;
+        color:#1f2938;
+        font:14px/1.5 Inter,Segoe UI,Arial,sans-serif
+      }
+      .app {
+        height:100vh;
+        min-height:560px;
+        max-width:1160px;
+        margin:auto;
+        display:grid;
+        grid-template-columns:220px 1fr;
+        background:white;
+        box-shadow:0 15px 60px #27334a14
+      }
+      .side {
+        background:#20273a;
+        color:#d8dbea;
+        padding:23px 15px
+      }
+      .logo {
+        font-weight:800;
+        font-size:20px;
+        color:white;
+        margin:0 10px 32px
+      }
+      .logo span {
+        color:#9d96ff
+      }
+      .caption {
+        font-size:10px;
+        text-transform:uppercase;
+        letter-spacing:.13em;
+        color:#8992aa;
+        margin:20px 10px 8px
+      }
+      .room {
+        width:100%;
+        border:0;
+        background:none;
+        color:#bfc5d4;
+        padding:10px;
+        border-radius:7px;
+        text-align:left;
+        font:inherit;
+        cursor:pointer
+      }
+      .room.active,.room:hover {
+        background:#323a50;
+        color:white
+      }
+      .room b {
+        color:#9c95f4;
+        margin-right:6px
+      }
+      .main {
+        display:flex;
+        min-width:0;
+        flex-direction:column
+      }
+      .bar {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:19px 25px;
+        border-bottom:1px solid #edf0f4
+      }
+      .bar h1 {
+        font-size:17px;
+        margin:0
+      }
+      .bar small {
+        color:#7f8899
+      }
+      .online {
+        color:#198462;
+        font-size:12px
+      }
+      .messages {
+        padding:24px 25px;
+        flex:1;
+        overflow:auto
+      }
+      .day {
+        text-align:center;
+        color:#96a0b1;
+        font-size:11px;
+        margin:0 0 22px
+      }
+      .msg {
+        display:flex;
+        gap:11px;
+        margin:18px 0;
+        align-items:flex-start
+      }
+      .avatar {
+        width:34px;
+        height:34px;
+        border-radius:10px;
+        background:#efeaff;
+        color:#5b50c8;
+        display:grid;
+        place-items:center;
+        font-weight:800;
+        flex:none
+      }
+      .msg:nth-of-type(odd) .avatar {
+        background:#e7f5ef;
+        color:#21805d
+      }
+      .text strong {
+        font-size:13px
+      }
+      .text time {
+        color:#98a1af;
+        font-size:10px;
+        margin-left:8px
+      }
+      .text p {
+        margin:4px 0;
+        color:#414a5b
+      }
+      .composer {
+        display:flex;
+        gap:10px;
+        padding:17px 22px;
+        border-top:1px solid #edf0f4
+      }
+      .composer input {
+        flex:1;
+        padding:12px;
+        border:1px solid #e1e5ed;
+        border-radius:9px;
+        font:inherit;
+        outline:none
+      }
+      .composer input:focus {
+        border-color:#837bf0
+      }
+      .composer button {
+        border:0;
+        background:#665de3;
+        color:white;
+        border-radius:9px;
+        padding:0 17px;
+        font-weight:700;
+        cursor:pointer
+      }
+      .hint {
+        font-size:10px;
+        color:#9aa2af;
+        padding:0 22px 12px
+      }
+      .empty {
+        color:#8c95a4;
+        text-align:center;
+        padding-top:60px
+      }
+      @media(max-width:620px) {
+        .app {
+          grid-template-columns:72px 1fr
+        }
+        .side {
+          padding:18px 8px
+        }
+        .logo {
+          font-size:0;
+          margin:5px 0 28px;
+          text-align:center
+        }
+        .logo:first-letter {
+          font-size:20px
+        }
+        .caption {
+          font-size:0;
+          margin:15px 0
+        }
+        .room {
+          text-align:center;
+          font-size:0;
+          padding:12px 4px
+        }
+        .room b {
+          font-size:15px;
+          margin:0
+        }
+        .bar {
+          padding:15px
+        }
+        .messages {
+          padding:18px 14px
+        }
+        .composer {
+          padding:12px
+        }
+        .hint {
+          padding-left:12px
+        }
+      }
+</style>
+  </head>
+  <body>
+    <script src="./portfolio-nav.js"></script>
+    <script src="./launchpad-helper.js"></script>
+    <main class="app">
+      <aside class="side">
+        <div class="logo">
+          gather<span>.</span>
+        </div>
+        <div class="caption">
+          Your workspace
+        </div>
+        <button class="room active" data-room="general"><b>#</b> general</button><button class="room" data-room="design"><b>#</b> design</button><button class="room" data-room="random"><b>#</b> random</button>
+      </aside>
+      <section class="main">
+        <header class="bar">
+          <div>
+            <h1 id="room-title">
+              # general
+            </h1>
+            <small>Browser-local chat demo · same-browser tabs only</small>
+          </div>
+          <div class="online">
+            ● <span id="count">0</span> here
+          </div>
+        </header>
+        <div class="messages" id="messages" aria-live="polite">
+        </div>
+        <form class="composer" id="form">
+          <input id="message" maxlength="500" autocomplete="off" placeholder="Choose a demo profile to chat" disabled><button type="submit">Send</button>
+        </form>
+        <div class="hint" id="hint">
+          Choose a demo profile above to join the rooms.
+        </div>
+      </section>
+    </main>
+    <script>
+let room="general",socket=null;const seen=new Set();
+function addMessage(message){if(message.room!==room||seen.has(message.id))return;seen.add(message.id);const box=document.querySelector("#messages"),empty=box.querySelector(".empty"),item=document.createElement("div"),avatar=document.createElement("div"),content=document.createElement("div"),head=document.createElement("div"),strong=document.createElement("strong"),stamp=document.createElement("time"),p=document.createElement("p");if(empty)empty.remove();item.className="msg";avatar.className="avatar";avatar.textContent=message.author.slice(0,1).toUpperCase();content.className="text";strong.textContent=message.author;stamp.textContent=new Date(message.created_at).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});p.textContent=message.body;head.append(strong,stamp);content.append(head,p);item.append(avatar,content);box.append(item);box.scrollTop=box.scrollHeight}
+let unsubscribe=null;
+async function selectRoom(){document.querySelector("#room-title").textContent="# "+room;document.querySelector("#message").placeholder="Message #"+room;document.querySelector("#hint").textContent=Launchpad.user?"Messages stay in this browser and sync across open tabs.":"Choose a demo profile above to join the rooms.";document.querySelectorAll(".room").forEach(b=>b.classList.toggle("active",b.dataset.room===room));const box=document.querySelector("#messages");box.replaceChildren();seen.clear();if(unsubscribe){unsubscribe();unsubscribe=null}if(!Launchpad.user)return;try{const result=await Launchpad.api(`/api/chat/messages?room=${encodeURIComponent(room)}`);result.messages.forEach(addMessage);if(!result.messages.length){const empty=document.createElement("div");empty.className="empty";empty.textContent="No messages in this browser yet. Start the conversation.";box.append(empty)}unsubscribe=Launchpad.chat.join(room,addMessage,count=>document.querySelector("#count").textContent=count)}catch(error){Launchpad.announce(error.message,true)}}
+document.querySelectorAll(".room").forEach(button=>button.addEventListener("click",()=>{room=button.dataset.room;selectRoom()}));document.querySelector("#form").addEventListener("submit",event=>{event.preventDefault();const input=document.querySelector("#message"),body=input.value.trim();if(!body)return;try{Launchpad.chat.send(room,body);input.value=""}catch(error){Launchpad.announce(error.message,true)}});
+Launchpad.sessionReady.then(user=>{document.querySelector("#message").disabled=!user;if(user)selectRoom()});Launchpad.onSessionChange(user=>{document.querySelector("#message").disabled=!user;if(unsubscribe){unsubscribe();unsubscribe=null}if(user)selectRoom();else{document.querySelector("#messages").replaceChildren();document.querySelector("#hint").textContent="Choose a demo profile above to chat.";document.querySelector("#count").textContent="0"}});
+</script>
+  </body>
+</html>

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Compare a text-based PDF resume with a job description using an explainable keyword checklist.">
+    <title>Matchwork | Resume Review</title>
+    <style>
+      * {
+        box-sizing:border-box
+      }
+      body {
+        margin:0;
+        background:#f6f5f2;
+        color:#282921;
+        font:15px/1.55 Inter,Segoe UI,Arial,sans-serif
+      }
+      .wrap {
+        max-width:1020px;
+        margin:auto;
+        padding:28px 20px
+      }
+      .bar {
+        display:flex;
+        justify-content:space-between;
+        align-items:center
+      }
+      .brand {
+        font-size:21px;
+        font-weight:850;
+        letter-spacing:-.04em
+      }
+      .brand span {
+        color:#a87935
+      }
+      .badge {
+        background:#eee8dc;
+        color:#785623;
+        border-radius:20px;
+        padding:7px 11px;
+        font-size:11px;
+        font-weight:700
+      }
+      .hero {
+        margin:28px 0;
+        background:#263a32;
+        color:#fff;
+        border-radius:16px;
+        padding:30px
+      }
+      .hero small {
+        color:#c8dab9;
+        letter-spacing:.14em;
+        text-transform:uppercase;
+        font-weight:700
+      }
+      .hero h1 {
+        font-size:clamp(29px,4vw,36px);
+        line-height:1.14;
+        margin:8px 0
+      }
+      .hero p {
+        color:#d6e0d9;
+        max-width:650px
+      }
+      .grid {
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:15px
+      }
+      .panel {
+        background:#fff;
+        border:1px solid #e9e5db;
+        border-radius:13px;
+        padding:21px
+      }
+      .panel h2 {
+        font-size:17px;
+        margin:0 0 5px
+      }
+      .sub {
+        font-size:12px;
+        color:#7d7d72;
+        margin:0 0 16px
+      }
+      label {
+        font-weight:700;
+        font-size:12px;
+        display:block;
+        margin:12px 0 6px
+      }
+      input,textarea {
+        width:100%;
+        padding:11px;
+        border:1px solid #dedfd8;
+        border-radius:8px;
+        font:inherit
+      }
+      textarea {
+        min-height:250px;
+        resize:vertical
+      }
+      input[type=file] {
+        background:#fcfbf8
+      }
+      button {
+        border:0;
+        border-radius:8px;
+        background:#28523f;
+        color:#fff;
+        padding:12px 16px;
+        font:inherit;
+        font-weight:700;
+        cursor:pointer
+      }
+      button:disabled {
+        opacity:.6;
+        cursor:wait
+      }
+      .submit {
+        width:100%;
+        margin-top:13px
+      }
+      .status {
+        min-height:21px;
+        font-size:12px;
+        color:#70796e;
+        margin-top:9px
+      }
+      .status.error {
+        color:#b42332
+      }
+      .result {
+        display:none
+      }
+      .result.show {
+        display:block
+      }
+      .scoreline {
+        display:flex;
+        justify-content:space-between;
+        align-items:center
+      }
+      .score {
+        font-size:38px;
+        font-weight:850;
+        color:#28523f
+      }
+      .skills {
+        display:flex;
+        flex-wrap:wrap;
+        gap:7px;
+        margin:10px 0
+      }
+      .skill {
+        padding:5px 9px;
+        border-radius:20px;
+        background:#eaf4ed;
+        color:#256447;
+        font-size:11px
+      }
+      .skill.missing {
+        background:#fff0e9;
+        color:#9e4d29
+      }
+      .columns {
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:12px
+      }
+      .columns h3 {
+        font-size:13px
+      }
+      .disclaimer {
+        background:#fff7e8;
+        border-radius:8px;
+        padding:12px;
+        color:#78633a;
+        font-size:11px;
+        margin-top:12px
+      }
+      @media(max-width:720px) {
+        .wrap {
+          padding:18px 12px
+        }
+        .grid,.columns {
+          grid-template-columns:1fr
+        }
+        .hero h1 {
+          font-size:clamp(27px,7vw,32px)
+        }
+        .hero {
+          padding:23px
+        }
+      }
+</style>
+  </head>
+  <body>
+    <script src="./portfolio-nav.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <main class="wrap">
+      <header class="bar">
+        <div class="brand">
+          match<span>work</span>
+        </div>
+        <div class="badge">
+          PRIVATE PDF REVIEW
+        </div>
+      </header>
+      <section class="hero">
+        <small>Resume & job description</small>
+        <h1>
+          Make your next application<br>more intentional.
+        </h1>
+        <p>
+          Upload a text-based PDF and compare its skills, keywords, and basic structure with the role you want.
+        </p>
+      </section>
+      <div class="grid">
+        <form class="panel" id="form">
+          <h2>
+            Job details
+          </h2>
+          <p class="sub">
+            PDF.js extracts text in this browser. Your resume is not uploaded or saved.
+          </p>
+          <label for="resume">Resume PDF (up to 5 MB)</label><input id="resume" name="resume" type="file" accept="application/pdf,.pdf" required><label for="job">Job description</label><textarea id="job" name="jobDescription" minlength="30" maxlength="12000" placeholder="Paste the role description, responsibilities, and required skills." required></textarea><button class="submit" type="submit">Analyze my match</button>
+          <div class="status" id="status" role="status" aria-live="polite">
+          </div>
+        </form>
+        <section class="panel result" id="result" aria-live="polite">
+          <div class="scoreline">
+            <div>
+              <h2>
+                Alignment estimate
+              </h2>
+              <p class="sub">
+                A checklist, not a hiring decision
+              </p>
+            </div>
+            <div class="score" id="score">
+              —
+            </div>
+          </div>
+          <p id="summary">
+          </p>
+          <div class="columns">
+            <div>
+              <h3>
+                Matched skills
+              </h3>
+              <div class="skills" id="matched">
+              </div>
+            </div>
+            <div>
+              <h3>
+                Skills to consider
+              </h3>
+              <div class="skills" id="missing">
+              </div>
+            </div>
+          </div>
+          <h3>
+            Job keywords to review
+          </h3>
+          <div class="skills" id="keywords">
+          </div>
+          <div class="disclaimer" id="notice">
+          </div>
+        </section>
+      </div>
+    </main>
+    <script>
+const form=document.querySelector("#form"),status=document.querySelector("#status"),result=document.querySelector("#result"),skillNames=["javascript","typescript","react","node.js","python","java","c#","sql","postgresql","mysql","sqlite","mongodb","aws","azure","docker","kubernetes","git","html","css","express","flask","django","machine learning","pandas","scikit-learn","communication","leadership","agile"];
+pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+function chips(selector,items,missing=false){const box=document.querySelector(selector);box.replaceChildren();if(!items.length){const empty=document.createElement("span");empty.textContent="None identified";empty.className="sub";box.append(empty);return}items.forEach(value=>{const chip=document.createElement("span");chip.className="skill"+(missing?" missing":"");chip.textContent=value;box.append(chip)})}
+function analyze(text,job,pageCount){const normalize=value=>value.toLowerCase().replace(/[^a-z0-9+#.\s-]/g," ").replace(/\s+/g," "),resume=normalize(text),description=normalize(job),contains=(value,word)=>new RegExp(`(^|[^a-z0-9])${word.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}($|[^a-z0-9])`,"i").test(value),jobSkills=skillNames.filter(word=>contains(description,word)),matchedSkills=jobSkills.filter(word=>contains(resume,word)),stop=new Set(["about","years","using","their","will","have","with","from","this","that","your","must","role","work","team","experience","required","preferred"]),keywords=[...new Set(description.split(" ").filter(word=>word.length>4&&!stop.has(word)))].slice(0,80),missingKeywords=keywords.filter(word=>!resume.includes(word)).slice(0,20),sections={experience:/\b(experience|employment|work history)\b/i.test(text),education:/\b(education|academic)\b/i.test(text),skills:/\b(skills|technologies|tools)\b/i.test(text)},skillScore=jobSkills.length?Math.round(matchedSkills.length/jobSkills.length*70):0,keywordScore=keywords.length?Math.round((keywords.length-missingKeywords.length)/keywords.length*20):10,structureScore=Math.min(10,(sections.experience?3:0)+(sections.education?3:0)+(sections.skills?3:0)+(pageCount<=3?1:0));return{score:Math.max(0,Math.min(100,skillScore+keywordScore+structureScore)),pageCount,resumeCharacters:text.length,matchedSkills,missingSkills:jobSkills.filter(word=>!matchedSkills.includes(word)),missingKeywords,notice:"Browser-only heuristic, not an employer's ATS score or a hiring decision. The PDF is processed locally and not saved."}}
+function draw(analysis){document.querySelector("#score").textContent=`${analysis.score}%`;document.querySelector("#summary").textContent=`${analysis.pageCount} page(s) · ${analysis.resumeCharacters.toLocaleString()} text characters`;chips("#matched",analysis.matchedSkills);chips("#missing",analysis.missingSkills,true);chips("#keywords",analysis.missingKeywords,true);document.querySelector("#notice").textContent=analysis.notice;result.classList.add("show")}
+form.addEventListener("submit",async event=>{event.preventDefault();const file=document.querySelector("#resume").files[0],job=document.querySelector("#job").value.trim();if(!file||file.size>5*1024*1024){status.textContent="Choose a PDF smaller than 5 MB.";return}if(!job||job.length<30){status.textContent="Paste a job description of at least 30 characters.";return}if(!window.pdfjsLib){status.textContent="PDF.js could not load. Check your internet connection and retry.";status.className="status error";return}const button=form.querySelector("button");button.disabled=true;button.textContent="Reviewing PDF locally…";status.textContent="The selected document stays in this browser.";try{const document=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;if(document.numPages>30)throw Error("PDFs are limited to 30 pages.");let text="";for(let pageNumber=1;pageNumber<=document.numPages;pageNumber++){const page=await document.getPage(pageNumber),content=await page.getTextContent();text+=content.items.map(item=>item.str||"").join(" ")+" "}text=text.replace(/\s+/g," ").trim();if(text.length<40)throw Error("This PDF has too little selectable text; image OCR is not supported.");draw(analyze(text,job,document.numPages));status.textContent="Review complete. Your uploaded PDF was not saved."}catch(error){status.textContent=error.message;status.className="status error"}finally{button.disabled=false;button.textContent="Analyze my match"}});
+</script>
+  </body>
+</html>

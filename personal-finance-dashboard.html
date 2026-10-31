@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pocketwise | Personal Finance</title>
+    <style>
+      :root {
+        --bg:#f5f7fb;
+        --ink:#182335;
+        --muted:#748095;
+        --line:#e8edf4;
+        --blue:#5269e8;
+        --green:#168c68;
+        --red:#da5965
+      }
+      * {
+        box-sizing:border-box
+      }
+      body {
+        margin:0;
+        background:var(--bg);
+        font:14px/1.5 Inter,Segoe UI,Arial,sans-serif;
+        color:var(--ink)
+      }
+      .layout {
+        max-width:1180px;
+        margin:auto;
+        padding:30px 24px
+      }
+      .top {
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        margin-bottom:25px
+      }
+      .logo {
+        font-size:22px;
+        font-weight:800;
+        letter-spacing:-.04em
+      }
+      .logo span {
+        color:var(--blue)
+      }
+      .top p {
+        color:var(--muted);
+        margin:3px 0
+      }
+      .pill {
+        background:#e9edff;
+        color:var(--blue);
+        border-radius:20px;
+        padding:8px 13px;
+        font-weight:700
+      }
+      .cards {
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:15px
+      }
+      .card,.panel {
+        background:white;
+        border:1px solid var(--line);
+        border-radius:13px;
+        padding:20px;
+        box-shadow:0 5px 18px #263a5b08
+      }
+      .label {
+        color:var(--muted);
+        font-size:12px;
+        font-weight:700;
+        text-transform:uppercase;
+        letter-spacing:.07em
+      }
+      .value {
+        font-size:28px;
+        font-weight:750;
+        margin-top:9px;
+        letter-spacing:-.04em
+      }
+      .positive {
+        color:var(--green)
+      }
+      .negative {
+        color:var(--red)
+      }
+      .main {
+        display:grid;
+        grid-template-columns:1.2fr .8fr;
+        gap:16px;
+        margin-top:16px
+      }
+      .panel h2 {
+        font-size:17px;
+        margin:0 0 5px
+      }
+      .sub {
+        color:var(--muted);
+        margin:0 0 18px;
+        font-size:12px
+      }
+      .bars {
+        height:180px;
+        display:flex;
+        align-items:end;
+        gap:10px;
+        padding:10px 3px 0;
+        border-bottom:1px solid var(--line)
+      }
+      .barcol {
+        flex:1;
+        display:flex;
+        height:100%;
+        flex-direction:column;
+        justify-content:end;
+        align-items:center;
+        gap:6px;
+        color:var(--muted);
+        font-size:10px
+      }
+      .bar {
+        width:min(28px,70%);
+        background:linear-gradient(#8392ff,#5269e8);
+        border-radius:6px 6px 2px 2px;
+        min-height:4px
+      }
+      .budget {
+        margin:17px 0
+      }
+      .budgethead {
+        display:flex;
+        justify-content:space-between;
+        font-size:12px;
+        margin-bottom:7px
+      }
+      .track {
+        height:7px;
+        background:#edf0f6;
+        border-radius:8px;
+        overflow:hidden
+      }
+      .fill {
+        height:100%;
+        background:var(--blue);
+        border-radius:8px
+      }
+      .toolbar {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin:25px 0 12px
+      }
+      .toolbar h2 {
+        margin:0;
+        font-size:18px
+      }
+      .actions {
+        display:flex;
+        gap:9px;
+        align-items:center;
+        flex-wrap:wrap
+      }
+      .actions input {
+        min-width:0;
+        width:125px;
+        padding:10px;
+        border:1px solid var(--line);
+        border-radius:8px;
+        font:inherit
+      }
+      button,.upload {
+        border:0;
+        border-radius:8px;
+        padding:10px 13px;
+        background:var(--blue);
+        color:white;
+        font-weight:700;
+        cursor:pointer;
+        font:inherit
+      }
+      .upload {
+        background:white;
+        border:1px solid var(--line);
+        color:var(--ink)
+      }
+      input[type=file] {
+        display:none
+      }
+      .status {
+        min-height:20px;
+        color:var(--muted);
+        font-size:12px;
+        margin:5px 0
+      }
+      table {
+        width:100%;
+        border-collapse:collapse
+      }
+      th,td {
+        text-align:left;
+        padding:12px 8px;
+        border-bottom:1px solid var(--line);
+        font-size:12px
+      }
+      th {
+        color:var(--muted);
+        font-size:10px;
+        text-transform:uppercase;
+        letter-spacing:.06em
+      }
+      .amount {
+        text-align:right;
+        font-weight:700
+      }
+      .empty {
+        text-align:center;
+        color:var(--muted);
+        padding:24px
+      }
+      .tag {
+        color:var(--muted)
+      }
+      @media(max-width:760px) {
+        .cards,.main {
+          grid-template-columns:1fr
+        }
+        .layout {
+          padding:20px 14px
+        }
+        .top {
+          align-items:flex-start;
+          gap:12px;
+          flex-direction:column
+        }
+        .toolbar {
+          align-items:flex-start;
+          gap:12px;
+          flex-direction:column
+        }
+        .panel {
+          overflow:auto
+        }
+      }
+</style>
+  </head>
+  <body>
+    <script src="./portfolio-nav.js"></script>
+    <main class="layout">
+      <header class="top">
+        <div>
+          <div class="logo">
+            pocket<span>wise</span>
+          </div>
+          <p>
+            Your money, made clearer.
+          </p>
+        </div>
+        <div class="pill">
+          Personal dashboard
+        </div>
+      </header>
+      <section class="cards">
+        <article class="card">
+          <div class="label">
+            This month's income
+          </div>
+          <div class="value positive" id="income">
+            ₹0
+          </div>
+        </article>
+        <article class="card">
+          <div class="label">
+            This month's spending
+          </div>
+          <div class="value negative" id="spending">
+            ₹0
+          </div>
+        </article>
+        <article class="card">
+          <div class="label">
+            This month's balance
+          </div>
+          <div class="value" id="balance">
+            ₹0
+          </div>
+        </article>
+      </section>
+      <section class="main">
+        <article class="panel">
+          <h2>
+            Spending by category
+          </h2>
+          <p class="sub">
+            Transactions in the current month
+          </p>
+          <div class="bars" id="chart">
+          </div>
+        </article>
+        <article class="panel">
+          <h2>
+            Monthly budgets
+          </h2>
+          <p class="sub">
+            Edit a category's monthly limit
+          </p>
+          <div id="budgets">
+          </div>
+          <form id="budget-form" class="actions">
+            <input id="budget-category" maxlength="50" placeholder="Category" required><input id="budget-limit" type="number" min="0" step=".01" placeholder="Monthly limit" required><button type="submit">Save budget</button>
+          </form>
+        </article>
+      </section>
+      <div class="toolbar">
+        <div>
+          <h2>
+            Transactions
+          </h2>
+          <div class="status" id="status" aria-live="polite">
+            Import a CSV statement or add a transaction.
+          </div>
+        </div>
+        <div class="actions">
+          <label class="upload" for="file">↑ Import CSV</label><input id="file" type="file" accept=".csv,text/csv"><button id="add">+ Add sample</button>
+        </div>
+      </div>
+      <section class="panel">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                Date
+              </th>
+              <th>
+                Description
+              </th>
+              <th>
+                Category
+              </th>
+              <th class="amount">
+                Amount
+              </th>
+            </tr>
+          </thead>
+          <tbody id="rows">
+          </tbody>
+        </table>
+      </section>
+      <p class="sub" style="text-align:center;margin-top:20px">
+        Browser-only demo · CSV and transactions stay in this browser's local storage.
+      </p>
+    </main>
+    <script src="./launchpad-helper.js"></script><script>
+let transactions=[],budgetTargets=[];
+const money=n=>new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(n);
+function render(){
+ const month=new Date().toISOString().slice(0,7),monthly=transactions.filter(t=>t.date.startsWith(month));
+ const income=monthly.filter(t=>t.amount>0).reduce((s,t)=>s+t.amount,0),spent=Math.abs(monthly.filter(t=>t.amount<0).reduce((s,t)=>s+t.amount,0));
+ document.querySelector("#income").textContent=money(income);document.querySelector("#spending").textContent=money(spent);document.querySelector("#balance").textContent=money(income-spent);
+ const groups={};monthly.filter(t=>t.amount<0).forEach(t=>groups[t.category]=(groups[t.category]||0)-t.amount);
+ const list=Object.entries(groups).sort((a,b)=>b[1]-a[1]).slice(0,6),max=Math.max(1,...list.map(x=>x[1])),chart=document.querySelector("#chart");chart.replaceChildren();
+ if(!list.length)chart.textContent="No spending transactions yet.";
+ list.forEach(([name,val])=>{const c=document.createElement("div"),b=document.createElement("div"),label=document.createElement("span");c.className="barcol";b.className="bar";b.style.height=Math.max(4,val/max*145)+"px";b.title=money(val);label.textContent=name;c.append(b,label);chart.append(c)});
+ const budget=document.querySelector("#budgets");budget.replaceChildren();budgetTargets.forEach(({category,limit})=>{const used=groups[category]||0,box=document.createElement("div"),head=document.createElement("div"),name=document.createElement("span"),value=document.createElement("span"),track=document.createElement("div"),fill=document.createElement("div");box.className="budget";head.className="budgethead";name.textContent=category;value.textContent=`${money(used)} / ${money(limit)}`;track.className="track";fill.className="fill";fill.style.width=Math.min(100,used/limit*100)+"%";track.append(fill);head.append(name,value);box.append(head,track);budget.append(box)});
+ const body=document.querySelector("#rows");body.replaceChildren();[...transactions].forEach(t=>{const tr=document.createElement("tr");[t.date,t.description,t.category].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td)});const amt=document.createElement("td");amt.className="amount "+(t.amount>0?"positive":"negative");amt.textContent=(t.amount>0?"+":"")+money(t.amount);tr.append(amt);body.append(tr)});
+ if(!transactions.length){const row=document.createElement("tr"),cell=document.createElement("td");cell.colSpan=4;cell.className="empty";cell.textContent="No transactions yet. Import a statement or add a sample.";row.append(cell);body.append(row)}
+}
+async function loadFinance(){if(!Launchpad.user)return;const userId=Launchpad.user.id;try{const data=await Launchpad.api("/api/finance");if(Launchpad.user?.id!==userId)return;transactions=data.transactions;budgetTargets=data.budgets.map(item=>({category:item.category,limit:item.limit_value}));render();document.querySelector("#status").textContent="Loaded local demo data. This browser profile is not a private account."}catch(error){Launchpad.announce(error.message,true)}}
+document.querySelector("#budget-form").addEventListener("submit",async event=>{event.preventDefault();const category=document.querySelector("#budget-category").value.trim(),limit=Number(document.querySelector("#budget-limit").value);try{await Launchpad.api("/api/finance/budgets",{method:"PUT",body:JSON.stringify({category,limit})});event.target.reset();await loadFinance();document.querySelector("#status").textContent=`Saved ${category}'s monthly budget.`}catch(error){document.querySelector("#status").textContent=error.message}});
+function csvRows(text){const rows=[];let row=[],cell="",quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'&&quoted&&text[i+1]==='"'){cell+='"';i++}else if(c==='"')quoted=!quoted;else if(c===","&&!quoted){row.push(cell.trim());cell=""}else if((c==="\n"||c==="\r")&&!quoted){if(c==="\r"&&text[i+1]==="\n")i++;row.push(cell.trim());if(row.some(Boolean))rows.push(row);row=[];cell=""}else cell+=c}if(quoted)throw Error("The CSV contains an unclosed quoted field.");row.push(cell.trim());if(row.some(Boolean))rows.push(row);return rows}
+document.querySelector("#file").addEventListener("change",async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>2*1024*1024)throw Error("CSV files must be smaller than 2 MB.");const rows=csvRows(await file.text());if(rows.length<2)throw Error("The CSV needs a header row and at least one transaction.");if(rows.length>1001)throw Error("Import up to 1,000 transactions at a time.");const headers=rows.shift().map(x=>x.toLowerCase());const pick=(r,names)=>{const i=headers.findIndex(h=>names.some(n=>h.includes(n)));return i<0?"":r[i]||""};const parsed=rows.map(r=>{const raw=pick(r,["amount"]),debitRaw=pick(r,["debit"]),creditRaw=pick(r,["credit"]),clean=x=>x.replace(/[₹,\s]/g,"");let amount;if(headers.some(h=>h==="debit"||h==="credit")){const debit=debitRaw?Number(clean(debitRaw)):0,credit=creditRaw?Number(clean(creditRaw)):0;if(!Number.isFinite(debit)||!Number.isFinite(credit))return null;amount=credit-debit}else amount=Number(clean(raw));if(!Number.isFinite(amount))return null;return{date:pick(r,["date"]),description:pick(r,["description","narration","details"])||"Imported transaction",category:pick(r,["category"])||"Other",amount}}).filter(Boolean);if(!parsed.length)throw Error("No rows with a valid numeric Amount or Debit/Credit columns were found.");const result=await Launchpad.api("/api/finance/transactions",{method:"POST",body:JSON.stringify({transactions:parsed})});await loadFinance();document.querySelector("#status").textContent=`Imported ${result.imported} transaction(s) to this browser's local demo.`}catch(error){document.querySelector("#status").textContent=error.message}e.target.value=""});
+document.querySelector("#add").addEventListener("click",async()=>{try{await Launchpad.api("/api/finance/transactions",{method:"POST",body:JSON.stringify({transactions:[{date:new Date().toISOString().slice(0,10),description:"Sample coffee purchase",category:"Food",amount:-240}]})});await loadFinance();document.querySelector("#status").textContent="Added a sample transaction."}catch(error){document.querySelector("#status").textContent=error.message}});
+Launchpad.sessionReady.then(user=>{if(user)loadFinance();else document.querySelector("#status").textContent="Choose a demo profile above to load browser-local transactions."});
+Launchpad.onSessionChange(user=>{transactions=[];budgetTargets=[];render();if(user)loadFinance();else document.querySelector("#status").textContent="Choose a demo profile above to load browser-local transactions."});
+</script>
+  </body>
+</html>

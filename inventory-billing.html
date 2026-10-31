@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Stockroom | Inventory & Billing</title>
+    <style>
+      * {
+        box-sizing:border-box
+      }
+      body {
+        margin:0;
+        background:#f4f6f8;
+        color:#263141;
+        font:14px/1.5 Inter,Segoe UI,Arial,sans-serif
+      }
+      .wrap {
+        max-width:1120px;
+        margin:auto;
+        padding:27px 20px
+      }
+      .head {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:22px
+      }
+      .brand {
+        font-size:21px;
+        font-weight:800
+      }
+      .brand span {
+        color:#13896b
+      }
+      .head small {
+        color:#7d8897
+      }
+      .stats {
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:13px
+      }
+      .stat,.panel {
+        background:white;
+        border:1px solid #e7ebef;
+        border-radius:12px;
+        padding:18px
+      }
+      .stat small {
+        color:#788494;
+        text-transform:uppercase;
+        font-size:10px;
+        font-weight:700;
+        letter-spacing:.08em
+      }
+      .stat strong {
+        font-size:25px;
+        display:block;
+        margin-top:5px
+      }
+      .content {
+        display:grid;
+        grid-template-columns:1.2fr .8fr;
+        gap:14px;
+        margin-top:15px
+      }
+      .panel h2 {
+        font-size:16px;
+        margin:0 0 14px
+      }
+      .tools {
+        display:flex;
+        gap:7px;
+        margin-bottom:12px
+      }
+      .tools input {
+        min-width:0;
+        flex:1;
+        padding:9px;
+        border:1px solid #e1e6eb;
+        border-radius:7px;
+        font:inherit
+      }
+      .tools button,.sell {
+        border:0;
+        background:#13896b;
+        color:white;
+        padding:9px 12px;
+        border-radius:7px;
+        font:inherit;
+        font-weight:700;
+        cursor:pointer
+      }
+      .tools button.secondary {
+        background:#edf6f2;
+        color:#167357
+      }
+      table {
+        width:100%;
+        border-collapse:collapse
+      }
+      th,td {
+        text-align:left;
+        padding:10px 6px;
+        border-bottom:1px solid #eff1f3;
+        font-size:11px
+      }
+      th {
+        font-size:9px;
+        color:#7f8a98;
+        text-transform:uppercase
+      }
+      .right {
+        text-align:right
+      }
+      .qty {
+        font-weight:700
+      }
+      .low {
+        color:#d6812f
+      }
+      .rowbtn {
+        border:0;
+        background:none;
+        color:#13896b;
+        cursor:pointer;
+        font:inherit;
+        font-weight:700
+      }
+      .receipt {
+        min-height:125px;
+        border:1px dashed #d7dfe3;
+        border-radius:8px;
+        padding:13px;
+        margin-bottom:12px
+      }
+      .receipt h3 {
+        margin:0 0 7px;
+        font-size:13px
+      }
+      .line {
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+        font-size:11px;
+        padding:3px 0
+      }
+      .totals {
+        border-top:1px solid #e7ebef;
+        padding-top:8px;
+        margin-top:7px
+      }
+      .formgrid {
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:8px
+      }
+      .formgrid input {
+        min-width:0;
+        padding:9px;
+        border:1px solid #e1e6eb;
+        border-radius:7px;
+        font:inherit
+      }
+      .formgrid button {
+        grid-column:1/-1
+      }
+      .status {
+        font-size:11px;
+        color:#758292;
+        min-height:18px;
+        margin-top:8px
+      }
+      .empty {
+        color:#9099a5;
+        text-align:center;
+        padding:20px;
+        font-size:12px
+      }
+      .access-note {
+        color:#8b6128;
+        background:#fff8e9;
+        padding:10px;
+        border-radius:7px;
+        font-size:11px
+      }
+      .panel [hidden] {
+        display:none!important
+      }
+      @media(max-width:760px) {
+        .wrap {
+          padding:17px 12px
+        }
+        .content {
+          grid-template-columns:1fr
+        }
+        .stats {
+          grid-template-columns:1fr
+        }
+        .head {
+          align-items:flex-start;
+          gap:3px;
+          flex-direction:column
+        }
+        .panel {
+          overflow:auto
+        }
+      }
+</style>
+  </head>
+  <body>
+    <script src="./portfolio-nav.js"></script>
+    <script src="./launchpad-helper.js"></script>
+    <main class="wrap">
+      <header class="head">
+        <div>
+          <div class="brand">
+            stock<span>room</span>
+          </div>
+          <small>Inventory & billing workspace</small>
+        </div>
+        <small>Browser-local demo</small>
+      </header>
+      <section class="stats">
+        <article class="stat">
+          <small>Products in catalog</small><strong id="count">0</strong>
+        </article>
+        <article class="stat">
+          <small>Stock units on hand</small><strong id="units">0</strong>
+        </article>
+        <article class="stat">
+          <small>Current bill total</small><strong id="total">₹0</strong>
+        </article>
+      </section>
+      <section class="content">
+        <article class="panel">
+          <h2>
+            Product inventory
+          </h2>
+          <div class="tools">
+            <input id="search" placeholder="Search products" aria-label="Search products"><button class="secondary" id="clear">Clear bill</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Product
+                </th>
+                <th>
+                  Price
+                </th>
+                <th>
+                  Stock
+                </th>
+                <th>
+                  Add to bill
+                </th>
+              </tr>
+            </thead>
+            <tbody id="products">
+            </tbody>
+          </table>
+          <div id="access-note" class="access-note" hidden>
+            Inventory access is restricted to faculty/operator accounts.
+          </div>
+          <h2 id="add-heading" style="margin-top:20px">
+            Add a product
+          </h2>
+          <form class="formgrid" id="add-form">
+            <input id="name" maxlength="40" placeholder="Product name" required><input id="price" type="number" min=".01" step=".01" placeholder="Unit price (₹)" required><input id="stock" type="number" min="0" step="1" placeholder="Opening stock" required><button class="sell">Add to inventory</button>
+          </form>
+          <div class="status" id="status" aria-live="polite">
+          </div>
+        </article>
+        <article class="panel">
+          <h2>
+            Current invoice
+          </h2>
+          <div class="receipt" id="receipt">
+          </div>
+          <div class="formgrid">
+            <input id="gst" type="number" min="0" max="100" value="5" aria-label="GST percent"><input id="discount" type="number" min="0" max="100" value="0" aria-label="Discount percent"><button class="sell" id="checkout">Complete sale</button>
+          </div>
+          <div class="status">
+            GST % · Discount %
+          </div>
+        </article>
+      </section>
+    </main>
+    <script>
+let products=[],bill={};const money=n=>new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR"}).format(n);
+function render(){const q=document.querySelector("#search").value.trim().toLowerCase();document.querySelector("#count").textContent=products.length;document.querySelector("#units").textContent=products.reduce((s,p)=>s+p.stock,0);const body=document.querySelector("#products");body.replaceChildren();const list=products.filter(p=>p.name.toLowerCase().includes(q));if(!list.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=4;td.className="empty";td.textContent="No matching products.";tr.append(td);body.append(tr)}list.forEach(p=>{const tr=document.createElement("tr");const vals=[p.name,money(p.price)];vals.forEach((v,i)=>{const td=document.createElement("td");td.textContent=v;if(i===0)td.style.fontWeight="700";tr.append(td)});const stock=document.createElement("td");stock.className="qty "+(p.stock<5?"low":"");stock.textContent=p.stock;tr.append(stock);const action=document.createElement("td"),btn=document.createElement("button"),inBill=bill[p.id]||0;btn.className="rowbtn";btn.textContent=p.stock===0?"Out of stock":inBill>=p.stock?"Max in bill":"+ Add";btn.disabled=p.stock===0||inBill>=p.stock;btn.addEventListener("click",()=>{if((bill[p.id]||0)>=p.stock){document.querySelector("#status").textContent="This bill already contains all available stock for that product.";return}bill[p.id]=(bill[p.id]||0)+1;render()});action.append(btn);tr.append(action);body.append(tr)});
+const receipt=document.querySelector("#receipt");receipt.replaceChildren();const title=document.createElement("h3");title.textContent="Ashapura Store · Invoice";receipt.append(title);let subtotal=0;Object.entries(bill).forEach(([id,qty])=>{const p=products.find(x=>x.id===Number(id));if(!p)return;subtotal+=p.price*qty;const line=document.createElement("div");line.className="line";line.textContent=`${p.name} × ${qty} — ${money(p.price*qty)}`;receipt.append(line)});if(!subtotal){const msg=document.createElement("div");msg.className="empty";msg.textContent="Add a product to start a bill.";receipt.append(msg)}const discount=Math.min(100,Math.max(0,Number(document.querySelector("#discount").value)||0)),gst=Math.min(100,Math.max(0,Number(document.querySelector("#gst").value)||0)),disc=subtotal*discount/100,tax=(subtotal-disc)*gst/100,total=subtotal-disc+tax;const totals=document.createElement("div");totals.className="totals";totals.innerHTML=`<div class="line"><span>Subtotal</span><b>${money(subtotal)}</b></div><div class="line"><span>Discount (${discount}%)</span><b>− ${money(disc)}</b></div><div class="line"><span>GST (${gst}%)</span><b>${money(tax)}</b></div><div class="line"><strong>Total</strong><strong>${money(total)}</strong></div>`;receipt.append(totals);document.querySelector("#total").textContent=money(total)}
+document.querySelector("#search").addEventListener("input",render);["gst","discount"].forEach(id=>document.querySelector("#"+id).addEventListener("input",render));document.querySelector("#clear").addEventListener("click",()=>{bill={};render();document.querySelector("#status").textContent="Bill cleared."});
+async function loadInventory(){if(!Launchpad.user)return;const authorized=Launchpad.user.role==="faculty";document.querySelector("#add-form").hidden=!authorized;document.querySelector("#add-heading").hidden=!authorized;document.querySelector("#access-note").hidden=authorized;if(!authorized){products=[];bill={};render();document.querySelector("#status").textContent="Choose the faculty/operator demo profile to manage browser-local inventory.";return}const userId=Launchpad.user.id;try{const result=await Launchpad.api("/api/inventory/products");if(Launchpad.user?.id!==userId)return;products=result.products;render();document.querySelector("#status").textContent="Inventory loaded from this browser's local demo."}catch(error){Launchpad.announce(error.message,true)}}
+document.querySelector("#add-form").addEventListener("submit",async e=>{e.preventDefault();const name=document.querySelector("#name").value.trim(),price=Number(document.querySelector("#price").value),stock=Number(document.querySelector("#stock").value);if(!name||!Number.isFinite(price)||price<=0||!Number.isInteger(stock)||stock<0){document.querySelector("#status").textContent="Enter a name, positive price, and whole-number stock quantity.";return}try{await Launchpad.api("/api/inventory/products",{method:"POST",body:JSON.stringify({name,price,stock})});e.target.reset();await loadInventory();document.querySelector("#status").textContent=`Added ${name} to inventory.`}catch(error){document.querySelector("#status").textContent=error.message}});
+document.querySelector("#checkout").addEventListener("click",async()=>{const items=Object.entries(bill).map(([productId,quantity])=>({productId:Number(productId),quantity}));if(!items.length){document.querySelector("#status").textContent="Add at least one product before completing a sale.";return}try{const sale=await Launchpad.api("/api/inventory/sales",{method:"POST",body:JSON.stringify({items,discountPercent:Number(document.querySelector("#discount").value),gstPercent:Number(document.querySelector("#gst").value)})});bill={};await loadInventory();document.querySelector("#status").textContent=`Sale #${sale.id} completed. Total ${money(sale.total)}; stock updated atomically.`}catch(error){document.querySelector("#status").textContent=error.message}});
+Launchpad.sessionReady.then(user=>{if(user)loadInventory();else{render();document.querySelector("#status").textContent="Choose the faculty/operator demo profile above to access this browser's inventory."}});Launchpad.onSessionChange(user=>{bill={};products=[];render();if(user)loadInventory();else document.querySelector("#status").textContent="Choose the faculty/operator demo profile above to access this browser's inventory."});
+</script>
+  </body>
+</html>

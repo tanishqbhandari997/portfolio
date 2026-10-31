@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pathfinder | Student Readiness Demo</title>
+    <style>
+      * {
+        box-sizing:border-box
+      }
+      body {
+        margin:0;
+        background:#f4f5fa;
+        color:#222a3a;
+        font:14px/1.5 Inter,Segoe UI,Arial,sans-serif
+      }
+      .wrap {
+        max-width:960px;
+        margin:auto;
+        padding:32px 20px
+      }
+      .top {
+        font-weight:800;
+        font-size:20px
+      }
+      .top span {
+        color:#786de5
+      }
+      .lead {
+        color:#798296;
+        margin-top:4px
+      }
+      .grid {
+        display:grid;
+        grid-template-columns:1fr .85fr;
+        gap:17px;
+        margin-top:24px
+      }
+      .panel {
+        background:white;
+        border:1px solid #e8eaf1;
+        border-radius:14px;
+        padding:24px
+      }
+      .panel h1,.panel h2 {
+        margin:0 0 6px;
+        font-size:20px
+      }
+      .intro {
+        color:#818b9c;
+        font-size:12px;
+        margin:0 0 22px
+      }
+      .field {
+        margin:17px 0
+      }
+      .field label {
+        display:flex;
+        justify-content:space-between;
+        font-weight:700;
+        font-size:13px
+      }
+      .field label span {
+        color:#7e8798;
+        font-weight:400
+      }
+      .field input {
+        width:100%;
+        margin-top:9px;
+        accent-color:#7166df
+      }
+      .ticks {
+        display:flex;
+        justify-content:space-between;
+        color:#a1a8b4;
+        font-size:10px
+      }
+      .field input[type=number] {
+        accent-color:auto;
+        padding:10px;
+        border:1px solid #e0e3eb;
+        border-radius:7px;
+        font:inherit
+      }
+      .run {
+        width:100%;
+        border:0;
+        border-radius:8px;
+        background:#6a60db;
+        color:white;
+        padding:12px;
+        font:inherit;
+        font-weight:700;
+        cursor:pointer
+      }
+      .result {
+        background:linear-gradient(150deg,#302b6a,#7066d8);
+        color:white;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        min-height:380px;
+        text-align:center
+      }
+      .result small {
+        color:#d6d3ff;
+        text-transform:uppercase;
+        letter-spacing:.1em;
+        font-size:10px
+      }
+      .score {
+        font-size:64px;
+        font-weight:800;
+        line-height:1.2;
+        margin:8px
+      }
+      .status {
+        font-size:20px;
+        font-weight:700
+      }
+      .gauge {
+        height:7px;
+        background:#ffffff35;
+        border-radius:10px;
+        margin:20px 5px 14px;
+        overflow:hidden
+      }
+      .gauge div {
+        height:100%;
+        width:0;
+        background:#96e2ba;
+        border-radius:10px;
+        transition:width .35s
+      }
+      .explain {
+        font-size:12px;
+        color:#e2e0ff
+      }
+      .disclaimer {
+        background:#fff8e9;
+        color:#78633a;
+        padding:12px;
+        border-radius:8px;
+        font-size:11px;
+        margin-top:16px
+      }
+      @media(max-width:700px) {
+        .grid {
+          grid-template-columns:1fr
+        }
+        .wrap {
+          padding:22px 13px
+        }
+        .result {
+          min-height:250px
+        }
+      }
+</style>
+  </head>
+  <body>
+    <script src="./portfolio-nav.js"></script>
+    <main class="wrap">
+      <header>
+        <div class="top">
+          pathfinder<span>.</span>
+        </div>
+        <div class="lead">
+          Student performance predictor · Learning prototype
+        </div>
+      </header>
+      <div class="grid">
+        <form class="panel" id="form">
+          <h1>
+            Student snapshot
+          </h1>
+          <p class="intro">
+            Adjust the inputs to see an illustrative readiness estimate.
+          </p>
+          <div class="field">
+            <label for="cgpa">Current CGPA <span id="cgpa-v">7.5 / 10</span></label><input id="cgpa" type="range" min="0" max="10" step=".1" value="7.5">
+            <div class="ticks">
+              <span>0</span><span>10</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="attendance">Attendance <span id="attendance-v">82%</span></label><input id="attendance" type="range" min="0" max="100" step="1" value="82">
+            <div class="ticks">
+              <span>0%</span><span>100%</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="projects">Completed projects <span>Count</span></label><input id="projects" type="number" min="0" max="20" value="3">
+          </div>
+          <div class="field">
+            <label for="internships">Internship experience <span>Months</span></label><input id="internships" type="number" min="0" max="36" value="2">
+          </div>
+          <button class="run" type="submit">Estimate readiness</button>
+          <div class="disclaimer">
+            This educational demo uses a transparent hand-written formula, not a trained or validated machine-learning model. It is not an admissions or employment decision tool.
+          </div>
+        </form>
+        <section class="panel result" aria-live="polite">
+          <small>Illustrative readiness score</small>
+          <div class="score" id="score">
+            —
+          </div>
+          <div class="status" id="status">
+            Ready when you are
+          </div>
+          <div class="gauge">
+            <div id="fill">
+            </div>
+          </div>
+          <p class="explain" id="explain">
+            Enter a student snapshot and run an estimate.
+          </p>
+        </section>
+      </div>
+    </main>
+    <script>
+const cgpa=document.querySelector("#cgpa"),attendance=document.querySelector("#attendance");
+cgpa.addEventListener("input",()=>document.querySelector("#cgpa-v").textContent=Number(cgpa.value).toFixed(1)+" / 10");
+attendance.addEventListener("input",()=>document.querySelector("#attendance-v").textContent=attendance.value+"%");
+document.querySelector("#form").addEventListener("submit",e=>{e.preventDefault();const values={cgpa:Number(cgpa.value),attendance:Number(attendance.value),projects:Number(document.querySelector("#projects").value),internships:Number(document.querySelector("#internships").value)};if(!Object.values(values).every(Number.isFinite)||values.projects<0||values.projects>20||values.internships<0||values.internships>36){document.querySelector("#explain").textContent="Please enter values within the displayed input ranges.";return}const score=Math.round(values.cgpa/10*45+values.attendance/100*25+Math.min(values.projects,5)/5*20+Math.min(values.internships,12)/12*10),label=score>=75?"Strong readiness":score>=55?"Building momentum":"Build foundational habits";document.querySelector("#score").textContent=score+"%";document.querySelector("#status").textContent=label;document.querySelector("#fill").style.width=score+"%";document.querySelector("#explain").textContent="Illustrative formula only; not trained machine learning."});
+</script>
+  </body>
+</html>

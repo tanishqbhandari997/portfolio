@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Campusly | College Portal</title>
+    <style>
+      * {
+        box-sizing:border-box
+      }
+      body {
+        margin:0;
+        background:#f6f7fa;
+        color:#20283a;
+        font:14px/1.5 Inter,Segoe UI,Arial,sans-serif
+      }
+      .shell {
+        max-width:1120px;
+        margin:auto;
+        padding:27px 22px
+      }
+      .head {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:24px
+      }
+      .brand {
+        font-weight:800;
+        font-size:21px
+      }
+      .brand i {
+        color:#7065e8;
+        font-style:normal
+      }
+      .role {
+        border:1px solid #e1e4eb;
+        padding:10px 13px;
+        border-radius:9px;
+        background:white;
+        font:inherit;
+        color:#3a4355
+      }
+      .welcome {
+        background:linear-gradient(120deg,#493fc1,#8177f3);
+        color:white;
+        border-radius:16px;
+        padding:26px 30px;
+        margin-bottom:17px
+      }
+      .welcome small {
+        opacity:.76;
+        letter-spacing:.1em;
+        text-transform:uppercase;
+        font-size:10px;
+        font-weight:700
+      }
+      .welcome h1 {
+        margin:7px 0;
+        font-size:clamp(23px,3vw,30px);
+        line-height:1.18
+      }
+      .welcome p {
+        margin:0;
+        opacity:.84
+      }
+      .cards {
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:14px
+      }
+      .card,.panel {
+        background:white;
+        border:1px solid #e8eaf0;
+        border-radius:13px;
+        padding:19px
+      }
+      .card span {
+        font-size:12px;
+        color:#70798b
+      }
+      .num {
+        font-size:26px;
+        font-weight:800;
+        margin:5px 0
+      }
+      .good {
+        color:#248663
+      }
+      .warn {
+        color:#d78b22
+      }
+      .body {
+        display:grid;
+        grid-template-columns:1.1fr .9fr;
+        gap:14px;
+        margin-top:15px
+      }
+      .panel h2 {
+        font-size:16px;
+        margin:0 0 14px
+      }
+      .item {
+        display:flex;
+        justify-content:space-between;
+        gap:12px;
+        padding:12px 0;
+        border-bottom:1px solid #f0f1f5
+      }
+      .item:last-child {
+        border:0
+      }
+      .item small {
+        display:block;
+        color:#7a8394
+      }
+      .badge {
+        font-size:11px;
+        color:#5449bf;
+        background:#f0efff;
+        padding:5px 9px;
+        border-radius:20px;
+        height:max-content
+      }
+      .notice {
+        padding:12px;
+        background:#f8f7ff;
+        border-left:3px solid #7065e8;
+        border-radius:3px;
+        margin:9px 0
+      }
+      .notice small {
+        color:#7a8394
+      }
+      .faculty-form {
+        display:none;
+        margin-top:14px
+      }
+      .faculty-form input {
+        padding:10px;
+        border:1px solid #ddd;
+        border-radius:7px;
+        font:inherit;
+        width:70%
+      }
+      .faculty-form button {
+        padding:10px 12px;
+        border:0;
+        border-radius:7px;
+        background:#655be0;
+        color:white;
+        font-weight:700;
+        cursor:pointer
+      }
+      footer {
+        text-align:center;
+        color:#8b93a2;
+        font-size:11px;
+        margin:22px
+      }
+      @media(max-width:700px) {
+        .cards,.body {
+          grid-template-columns:1fr
+        }
+        .head {
+          gap:10px;
+          align-items:flex-start;
+          flex-direction:column
+        }
+        .shell {
+          padding:18px 13px
+        }
+      }
+</style>
+  </head>
+  <body>
+    <script src="./portfolio-nav.js"></script>
+    <script src="./launchpad-helper.js"></script>
+    <main class="shell">
+      <header class="head">
+        <div class="brand">
+          campus<i>ly</i> <span style="font-size:12px;color:#7d8595;font-weight:500">· College portal</span>
+        </div>
+        <span class="role" id="role">Choose a demo profile</span>
+      </header>
+      <section class="welcome">
+        <small id="role-label">College portal</small>
+        <h1 id="greeting">
+          Welcome to Campusly 👋
+        </h1>
+        <p id="welcome-copy">
+          Choose a demo profile above to view the college portal.
+        </p>
+      </section>
+      <section class="cards" id="cards">
+      </section>
+      <section class="body">
+        <article class="panel">
+          <h2 id="left-title">
+            This week's timetable
+          </h2>
+          <div id="schedule">
+          </div>
+          <div class="faculty-form" id="notice-form">
+            <input id="notice-input" maxlength="500" placeholder="Write a class notice"><button id="post">Broadcast</button>
+            <div id="students">
+            </div>
+          </div>
+        </article>
+        <article class="panel">
+          <h2 id="right-title">
+            Latest notices
+          </h2>
+          <div id="notices">
+          </div>
+        </article>
+      </section>
+      <footer>
+        Sample student profile and notices are saved only in this browser. The demo role selector is not access control.
+      </footer>
+    </main>
+    <script>
+let dashboard=null;
+function metric(label,value,caption,color){const card=document.createElement("article"),title=document.createElement("span"),number=document.createElement("div"),note=document.createElement("span");card.className="card";title.textContent=label;number.className="num "+(color||"");number.textContent=value;note.textContent=caption;card.append(title,number,note);return card}
+function render(){if(!dashboard)return;const faculty=dashboard.role==="faculty",profile=dashboard.profile||{attendance:0,cgpa:0},cards=document.querySelector("#cards");document.querySelector("#role").textContent=faculty?"Faculty / mentor":"Student";document.querySelector("#role-label").textContent=faculty?"Faculty / mentor dashboard":"Student dashboard";document.querySelector("#greeting").textContent=`Welcome back, ${Launchpad.user.name} 👋`;document.querySelector("#welcome-copy").textContent=faculty?"Your classes and student support overview.":"Your personal learning record.";
+cards.replaceChildren(...(faculty?[metric("Classes today",String(dashboard.timetable.length),"Across your timetable"),metric("Students monitored",String(dashboard.students.length),"Registered student accounts"),metric("Need attention",String(dashboard.students.filter(s=>s.attendance<75).length),"Attendance below 75%","warn")]:[metric("Attendance",`${Number(profile.attendance).toFixed(0)}%`,profile.attendance>=75?"At or above the 75% threshold":"Update pending",profile.attendance>=75?"good":"warn"),metric("Current CGPA",Number(profile.cgpa).toFixed(1),"Out of 10"),metric("Upcoming",String(dashboard.timetable.length),"Scheduled classes")]));
+document.querySelector("#left-title").textContent=faculty?"Today's classes":"This week's timetable";const schedule=document.querySelector("#schedule");schedule.replaceChildren();dashboard.timetable.forEach(item=>{const row=document.createElement("div"),detail=document.createElement("div"),name=document.createElement("b"),place=document.createElement("small"),time=document.createElement("span");row.className="item";name.textContent=item.name;place.textContent=item.place;time.className="badge";time.textContent=item.time;detail.append(name,place);row.append(detail,time);schedule.append(row)});
+document.querySelector("#right-title").textContent=faculty?"Student alerts & notices":"Latest notices";const notices=document.querySelector("#notices");notices.replaceChildren();const alerts=faculty?dashboard.students.filter(s=>s.attendance<75).map(s=>({body:`${s.name} is below the 75% attendance threshold (${s.attendance}%).`,created_at:"Needs follow-up"})):[];const shown=faculty?[...alerts,...dashboard.notices.slice(0,5)]:dashboard.notices;shown.forEach(notice=>{const item=document.createElement("div"),body=document.createElement("div"),time=document.createElement("small");item.className="notice";body.textContent=notice.body;time.textContent=notice.created_at==="Needs follow-up"?notice.created_at:`${notice.author} · ${new Date(notice.created_at).toLocaleDateString()}`;item.append(body,time);notices.append(item)});if(!shown.length)notices.textContent="No notices yet.";
+document.querySelector("#notice-form").style.display=faculty?"block":"none";if(faculty)renderStudents()}
+function renderStudents(){const list=document.querySelector("#students");list.replaceChildren();const title=document.createElement("h3");title.textContent="Student records";title.style.margin="18px 0 8px";list.append(title);if(!dashboard.students.length){const empty=document.createElement("p");empty.textContent="No student accounts have registered yet.";list.append(empty);return}dashboard.students.forEach(student=>{const form=document.createElement("form"),name=document.createElement("strong"),attendance=document.createElement("input"),cgpa=document.createElement("input"),save=document.createElement("button");form.className="item";form.style.flexWrap="wrap";name.textContent=student.name;attendance.type="number";attendance.min="0";attendance.max="100";attendance.step=".1";attendance.value=student.attendance;attendance.setAttribute("aria-label",`${student.name} attendance percent`);cgpa.type="number";cgpa.min="0";cgpa.max="10";cgpa.step=".1";cgpa.value=student.cgpa;cgpa.setAttribute("aria-label",`${student.name} CGPA`);save.type="submit";save.textContent="Save";form.append(name,attendance,cgpa,save);form.addEventListener("submit",async event=>{event.preventDefault();try{await Launchpad.api(`/api/college/students/${student.id}`,{method:"PATCH",body:JSON.stringify({attendance:Number(attendance.value),cgpa:Number(cgpa.value)})});await loadDashboard();Launchpad.announce(`Updated ${student.name}'s profile.`)}catch(error){Launchpad.announce(error.message,true)}});list.append(form)})}
+async function loadDashboard(){if(!Launchpad.user)return;const userId=Launchpad.user.id;try{const result=await Launchpad.api("/api/college/dashboard");if(Launchpad.user?.id!==userId)return;dashboard=result;render()}catch(error){Launchpad.announce(error.message,true)}}
+document.querySelector("#post").addEventListener("click",async()=>{const input=document.querySelector("#notice-input"),body=input.value.trim();if(!body)return;try{await Launchpad.api("/api/college/notices",{method:"POST",body:JSON.stringify({body})});input.value="";await loadDashboard();Launchpad.announce("Notice broadcast to the portal.")}catch(error){Launchpad.announce(error.message,true)}});
+function clearDashboard(){dashboard=null;document.querySelector("#role").textContent="Choose a demo profile";document.querySelector("#role-label").textContent="College portal";document.querySelector("#greeting").textContent="Welcome to Campusly 👋";document.querySelector("#welcome-copy").textContent="Choose a demo profile above to view the college portal.";document.querySelector("#cards").replaceChildren();document.querySelector("#schedule").replaceChildren();document.querySelector("#notices").replaceChildren();document.querySelector("#students").replaceChildren();document.querySelector("#notice-form").style.display="none"}
+Launchpad.sessionReady.then(user=>{if(user)loadDashboard();else clearDashboard()});Launchpad.onSessionChange(user=>{if(user)loadDashboard();else clearDashboard()});
+</script>
+  </body>
+</html>

@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Relational warehouse inventory, vendors, batches, and purchase order planner.">
+    <title>Supplyline | Reorder Planner</title>
+    <style>
+      * {
+        box-sizing:border-box
+      }
+      body {
+        margin:0;
+        background:#f4f6f8;
+        color:#263141;
+        font:14px/1.5 Inter,Segoe UI,Arial,sans-serif
+      }
+      .wrap {
+        max-width:1180px;
+        margin:auto;
+        padding:28px 20px
+      }
+      .head {
+        display:flex;
+        justify-content:space-between;
+        align-items:center
+      }
+      .brand {
+        font-size:22px;
+        font-weight:850
+      }
+      .brand span {
+        color:#d47c38
+      }
+      .muted {
+        color:#788494;
+        font-size:11px
+      }
+      .hero {
+        margin:20px 0;
+        background:#20344a;
+        color:white;
+        border-radius:14px;
+        padding:25px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:15px
+      }
+      .hero h1 {
+        font-size:clamp(23px,3vw,30px);
+        line-height:1.2;
+        margin:0 0 4px
+      }
+      .hero p {
+        margin:0;
+        color:#c5d1df
+      }
+      .hero button {
+        background:#efaa63;
+        color:#34291e
+      }
+      .stats {
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:12px
+      }
+      .stat,.panel {
+        background:white;
+        border:1px solid #e7ebef;
+        border-radius:12px;
+        padding:17px
+      }
+      .stat small {
+        color:#7c8795;
+        text-transform:uppercase;
+        font-size:10px;
+        letter-spacing:.08em;
+        font-weight:700
+      }
+      .stat strong {
+        display:block;
+        font-size:24px;
+        margin-top:4px
+      }
+      .columns {
+        display:grid;
+        grid-template-columns:1.35fr .65fr;
+        gap:14px;
+        margin-top:14px
+      }
+      .panel h2 {
+        font-size:16px;
+        margin:0 0 13px
+      }
+      .toolbar {
+        display:flex;
+        gap:7px;
+        align-items:center;
+        flex-wrap:wrap;
+        margin-bottom:10px
+      }
+      input,select {
+        padding:9px;
+        border:1px solid #dfe4e8;
+        border-radius:7px;
+        font:inherit
+      }
+      button {
+        border:0;
+        border-radius:7px;
+        background:#315742;
+        color:white;
+        padding:9px 12px;
+        font:inherit;
+        font-weight:700;
+        cursor:pointer
+      }
+      button.secondary {
+        background:#edf2ee;
+        color:#345443
+      }
+      button.warn {
+        background:#a4513e;
+        color:white
+      }
+      table {
+        width:100%;
+        border-collapse:collapse
+      }
+      td,th {
+        text-align:left;
+        padding:9px 6px;
+        border-bottom:1px solid #eef0f2;
+        font-size:11px
+      }
+      th {
+        font-size:9px;
+        color:#7f8a98;
+        text-transform:uppercase;
+        letter-spacing:.06em
+      }
+      .low {
+        color:#b94732;
+        font-weight:800
+      }
+      .ok {
+        color:#218064
+      }
+      .form {
+        border-top:1px solid #eef0f2;
+        margin-top:16px;
+        padding-top:15px
+      }
+      .form h3 {
+        font-size:13px
+      }
+      .gridform {
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:7px
+      }
+      .gridform input,.gridform select {
+        min-width:0;
+        width:100%
+      }
+      .gridform button {
+        grid-column:1/-1
+      }
+      .list {
+        display:grid;
+        gap:8px
+      }
+      .order,.contact {
+        padding:10px;
+        border:1px solid #edf0f1;
+        border-radius:8px;
+        font-size:11px
+      }
+      .order strong,.contact strong {
+        display:block
+      }
+      .actions {
+        display:flex;
+        gap:6px;
+        margin-top:8px
+      }
+      .status {
+        color:#6c7887;
+        font-size:11px;
+        min-height:18px;
+        margin-top:7px
+      }
+      .status.error {
+        color:#ae3535
+      }
+      .note {
+        margin-top:15px;
+        padding:10px;
+        background:#fff7e8;
+        color:#7d653b;
+        border-radius:8px;
+        font-size:10px
+      }
+      @media(max-width:800px) {
+        .wrap {
+          padding:16px 12px
+        }
+        .columns {
+          grid-template-columns:1fr
+        }
+        .stats {
+          grid-template-columns:1fr
+        }
+        .hero {
+          align-items:flex-start;
+          flex-direction:column
+        }
+        .gridform {
+          grid-template-columns:1fr
+        }
+        .gridform button {
+          grid-column:auto
+        }
+        .panel {
+          overflow:auto
+        }
+      }
+</style>
+  </head>
+  <body>
+    <script src="./portfolio-nav.js"></script>
+    <script src="./launchpad-helper.js"></script>
+    <main class="wrap">
+      <header class="head">
+        <div>
+          <div class="brand">
+            supply<span>line</span>
+          </div>
+          <div class="muted">
+            Warehouse inventory · Suppliers · Batch stock · Reorder reports
+          </div>
+        </div>
+        <span class="muted">Browser-local demo planner</span>
+      </header>
+      <section class="hero">
+        <div>
+          <h1>
+            Know what to reorder before it runs out.
+          </h1>
+          <p>
+            Batch-level stock visibility, supplier contacts, and purchase-order planning.
+          </p>
+        </div>
+        <button id="plan">Generate reorder plan</button>
+      </section>
+      <section class="stats">
+        <article class="stat">
+          <small>Products tracked</small><strong id="product-count">—</strong>
+        </article>
+        <article class="stat">
+          <small>Below reorder point</small><strong id="low-count" class="low">—</strong>
+        </article>
+        <article class="stat">
+          <small>Open purchase orders</small><strong id="open-count">—</strong>
+        </article>
+      </section>
+      <section class="columns">
+        <article class="panel">
+          <h2>
+            Products and batch stock
+          </h2>
+          <div class="toolbar">
+            <input id="search" placeholder="Search SKU, product, vendor"><select id="category-filter"><option value="">All categories</option></select><select id="stock-filter"><option value="all">All stock</option><option value="low">Low stock only</option></select>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  SKU / product
+                </th>
+                <th>
+                  Category
+                </th>
+                <th>
+                  Supplier
+                </th>
+                <th>
+                  On hand
+                </th>
+                <th>
+                  On order
+                </th>
+                <th>
+                  Reorder at
+                </th>
+                <th>
+                  Batch count
+                </th>
+              </tr>
+            </thead>
+            <tbody id="products">
+            </tbody>
+          </table>
+          <form class="form" id="product-form">
+            <h3>
+              Add product with opening batch
+            </h3>
+            <div class="gridform">
+              <input name="sku" maxlength="40" placeholder="SKU" required><input name="name" maxlength="120" placeholder="Product name" required><input name="category" maxlength="80" placeholder="Category" required><select name="vendorId" required aria-label="Supplier"></select><input name="reorderPoint" type="number" min="0" placeholder="Reorder point" required><input name="batchCode" maxlength="60" placeholder="Opening batch code" required><input name="quantity" type="number" min="0" placeholder="Opening quantity" required><button type="submit">Add product</button>
+            </div>
+          </form>
+        </article>
+        <aside>
+          <article class="panel">
+            <h2>
+              Suppliers
+            </h2>
+            <div id="vendors" class="list">
+            </div>
+            <form class="form" id="vendor-form">
+              <h3>
+                Add supplier
+              </h3>
+              <div class="gridform">
+                <input name="name" maxlength="100" placeholder="Company" required><input name="contactName" maxlength="100" placeholder="Contact person" required><input name="email" type="email" placeholder="Email" required><input name="phone" maxlength="30" placeholder="Phone" required><button type="submit">Add supplier</button>
+              </div>
+            </form>
+          </article>
+          <article class="panel" style="margin-top:14px">
+            <h2>
+              Open purchase orders
+            </h2>
+            <div id="orders" class="list">
+            </div>
+          </article>
+        </aside>
+      </section>
+      <section class="panel" style="margin-top:14px">
+        <h2>
+          Vendor contact log
+        </h2>
+        <div class="toolbar">
+          <select id="contact-vendor" aria-label="Supplier to contact"></select><input id="contact-note" maxlength="500" placeholder="Call, quote, delivery update…" style="flex:1"><button id="log-contact">Log contact</button>
+        </div>
+        <div id="contacts" class="list">
+        </div>
+      </section>
+      <div id="status" class="status" role="status" aria-live="polite">
+      </div>
+      <div class="note">
+        Sample warehouse data and supplier addresses use reserved .example domains. This is a planning tool, not an automatic supplier order sender.
+      </div>
+    </main>
+    <script>
+let dashboard=null;const status=document.querySelector("#status");
+function announce(text,error=false){status.textContent=text;status.classList.toggle("error",error)}
+function render(){if(!dashboard)return;const products=dashboard.products,term=document.querySelector("#search").value.trim().toLowerCase(),category=document.querySelector("#category-filter").value,lowOnly=document.querySelector("#stock-filter").value==="low",visible=products.filter(product=>(!category||product.category===category)&&(!lowOnly||product.on_hand<=product.reorder_point)&&`${product.sku} ${product.name} ${product.vendor} ${product.category}`.toLowerCase().includes(term));document.querySelector("#product-count").textContent=products.length;document.querySelector("#low-count").textContent=dashboard.lowStockCount;document.querySelector("#open-count").textContent=dashboard.orders.length;
+const rows=document.querySelector("#products");rows.replaceChildren();if(!visible.length){const row=document.createElement("tr"),cell=document.createElement("td");cell.colSpan=7;cell.textContent="No products match these filters.";row.append(cell);rows.append(row)}visible.forEach(product=>{const row=document.createElement("tr");const fields=[`${product.sku} · ${product.name}`,product.category,product.vendor,product.on_hand,product.on_order,product.reorder_point,product.batch_count];fields.forEach((value,index)=>{const cell=document.createElement("td");cell.textContent=value;if(index===3)cell.className=product.on_hand<=product.reorder_point?"low":"ok";row.append(cell)});rows.append(row)});
+const categories=document.querySelector("#category-filter"),current=categories.value;categories.replaceChildren(new Option("All categories",""));dashboard.categories.forEach(item=>categories.add(new Option(item.name,item.name)));categories.value=current;
+for(const selector of ["#contact-vendor","select[name=vendorId]"]){const select=document.querySelector(selector),selected=select.value;select.replaceChildren(new Option(selector==="#contact-vendor"?"Choose supplier":"Select supplier",""));dashboard.vendors.forEach(vendor=>select.add(new Option(vendor.name,vendor.id)));select.value=selected}
+const vendors=document.querySelector("#vendors");vendors.replaceChildren();dashboard.vendors.forEach(vendor=>{const item=document.createElement("div"),name=document.createElement("strong"),person=document.createElement("span"),contact=document.createElement("div");item.className="contact";name.textContent=vendor.name;person.textContent=`${vendor.contact_name} · ${vendor.email} · ${vendor.phone}`;contact.textContent=`${products.filter(product=>product.vendor_id===vendor.id).length} product(s)`;item.append(name,person,contact);vendors.append(item)});
+const orders=document.querySelector("#orders");orders.replaceChildren();if(!dashboard.orders.length){orders.textContent="No open purchase orders."}dashboard.orders.forEach(order=>{const item=document.createElement("div"),name=document.createElement("strong"),detail=document.createElement("div"),actions=document.createElement("div");item.className="order";name.textContent=`PO-${order.id} · ${order.sku}`;detail.textContent=`${order.product} · ${order.quantity} units · ${order.vendor} · ${order.status}`;actions.className="actions";if(order.status==="planned"){const send=document.createElement("button");send.className="secondary";send.textContent="Mark ordered";send.addEventListener("click",()=>updateOrder(order.id,"ordered"));actions.append(send)}if(order.status==="ordered"){const received=document.createElement("button");received.textContent="Receive batch";received.addEventListener("click",()=>updateOrder(order.id,"received"));actions.append(received)}const cancel=document.createElement("button");cancel.className="warn";cancel.textContent="Cancel";cancel.addEventListener("click",()=>updateOrder(order.id,"cancelled"));actions.append(cancel);item.append(name,detail,actions);orders.append(item)});
+const contacts=document.querySelector("#contacts");contacts.replaceChildren();if(!dashboard.contacts.length){contacts.textContent="No vendor contacts logged."}dashboard.contacts.forEach(entry=>{const item=document.createElement("div"),name=document.createElement("strong"),detail=document.createElement("span");item.className="contact";name.textContent=`${entry.vendor} · ${entry.author}`;detail.textContent=`${new Date(entry.created_at).toLocaleString()} · ${entry.note}`;item.append(name,detail);contacts.append(item)})}
+async function load(){if(!Launchpad.user)return;if(Launchpad.user.role!=="faculty"){dashboard=null;render();announce("Choose the faculty/operator demo profile to use the warehouse planner.",true);return}const userId=Launchpad.user.id;try{const result=await Launchpad.api("/api/warehouse/dashboard");if(Launchpad.user?.id!==userId)return;dashboard=result;render();announce("Warehouse report loaded from browser-local supplier, product, and batch records.")}catch(error){announce(error.message,true)}}
+async function updateOrder(id,statusValue){try{await Launchpad.api(`/api/warehouse/orders/${id}`,{method:"PATCH",body:JSON.stringify({status:statusValue})});await load();announce(`Purchase order updated to ${statusValue}.`)}catch(error){announce(error.message,true)}}
+document.querySelector("#search").addEventListener("input",render);document.querySelector("#category-filter").addEventListener("change",render);document.querySelector("#stock-filter").addEventListener("change",render);
+document.querySelector("#plan").addEventListener("click",async()=>{try{const result=await Launchpad.api("/api/warehouse/reorder-plan",{method:"POST",body:"{}"});await load();announce(result.orders.length?`Created ${result.orders.length} planned purchase order(s).`:"No additional reorder is needed; existing open orders cover current shortages.")}catch(error){announce(error.message,true)}});
+document.querySelector("#vendor-form").addEventListener("submit",async event=>{event.preventDefault();const data=Object.fromEntries(new FormData(event.target));try{await Launchpad.api("/api/warehouse/vendors",{method:"POST",body:JSON.stringify(data)});event.target.reset();await load();announce("Supplier added to this browser's local demo.")}catch(error){announce(error.message,true)}});
+document.querySelector("#product-form").addEventListener("submit",async event=>{event.preventDefault();const data=Object.fromEntries(new FormData(event.target));for(const key of ["vendorId","reorderPoint","quantity"])data[key]=Number(data[key]);try{await Launchpad.api("/api/warehouse/products",{method:"POST",body:JSON.stringify(data)});event.target.reset();await load();announce("Product and opening batch added.")}catch(error){announce(error.message,true)}});
+document.querySelector("#log-contact").addEventListener("click",async()=>{const vendorId=document.querySelector("#contact-vendor").value,note=document.querySelector("#contact-note").value.trim();if(!vendorId){announce("Choose a supplier first.",true);return}try{await Launchpad.api(`/api/warehouse/vendors/${vendorId}/contacts`,{method:"POST",body:JSON.stringify({note})});document.querySelector("#contact-note").value="";await load();announce("Supplier contact was logged.")}catch(error){announce(error.message,true)}});
+Launchpad.sessionReady.then(user=>{if(user)load();else announce("Choose the faculty/operator demo profile above to access the warehouse planner.")});Launchpad.onSessionChange(user=>{dashboard=null;if(user)load();else{render();announce("Choose the faculty/operator demo profile above to access the warehouse planner.")}});
+</script>
+  </body>
+</html>

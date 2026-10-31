@@ -1,0 +1,1507 @@
+<!doctype html>
+<html lang="en" class="portfolio-opening">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Tanishq Bhandari's collection of thoughtful web, data, and desktop projects."
+    />
+    <meta name="theme-color" content="#f6f4ed" />
+    <title>Tanishq Bhandari | Projects & experiments</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #f6f4ed;
+        --card: #fffefa;
+        --ink: #203a34;
+        --muted: #71817a;
+        --line: #e6e8de;
+        --green: #315f4f;
+        --green-soft: #e6efe8;
+        --peach: #f7e5d8;
+        --lavender: #eeebf8;
+        --yellow: #f6edc9;
+        --shadow: 0 18px 50px rgba(42, 62, 51, 0.07);
+        font-family: "Segoe UI", Inter, Arial, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(
+            ellipse at 82% 4%,
+            rgba(227, 237, 222, 0.7),
+            transparent 30rem
+          ),
+          var(--paper);
+        color: var(--ink);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      a {
+        color: inherit;
+      }
+      a:focus-visible {
+        outline: 3px solid #bb805e;
+        outline-offset: 4px;
+      }
+      .skip-link {
+        position: absolute;
+        top: -60px;
+        left: 16px;
+        z-index: 5;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: var(--ink);
+        color: white;
+      }
+      .skip-link:focus {
+        top: 12px;
+      }
+      .layout {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 42px 0 30px;
+        display: grid;
+        grid-template-columns: 285px minmax(0, 1fr);
+        align-items: start;
+        gap: 22px;
+      }
+      .profile {
+        position: sticky;
+        top: 24px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: var(--card);
+        box-shadow: var(--shadow);
+        transform-style: preserve-3d;
+        transition:
+          box-shadow 0.25s ease,
+          transform 0.25s ease;
+      }
+      .profile-art {
+        position: relative;
+        display: grid;
+        min-height: 185px;
+        place-items: center;
+        overflow: hidden;
+        background: linear-gradient(145deg, #dce9dc, #edf0df 52%, #f5e4d7);
+      }
+      .profile-art::before,
+      .profile-art::after {
+        position: absolute;
+        content: "";
+        border: 1px solid rgba(49, 95, 79, 0.2);
+        border-radius: 50%;
+      }
+      .profile-art::before {
+        width: 190px;
+        height: 190px;
+      }
+      .profile-art::after {
+        width: 245px;
+        height: 245px;
+      }
+      .initials {
+        z-index: 1;
+        display: grid;
+        width: 92px;
+        height: 92px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 28px;
+        background: rgba(255, 254, 250, 0.72);
+        color: var(--green);
+        font-family: Georgia, serif;
+        font-size: 43px;
+        box-shadow: 0 12px 32px rgba(47, 79, 63, 0.12);
+        transform: rotate(-5deg);
+        animation: initials-float 5s ease-in-out infinite;
+      }
+      .profile-body {
+        padding: 23px;
+      }
+      .eyebrow {
+        margin: 0;
+        color: #718277;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .profile h2 {
+        margin: 6px 0 3px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 30px;
+        font-weight: 600;
+        letter-spacing: -0.04em;
+      }
+      .profile-copy {
+        margin: 0;
+        color: var(--muted);
+      }
+      .divider {
+        height: 1px;
+        margin: 19px 0;
+        background: var(--line);
+      }
+      .label {
+        margin: 0 0 9px;
+        font-size: 12px;
+        font-weight: 750;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+      .chip {
+        padding: 6px 9px;
+        border: 1px solid #e7e9df;
+        border-radius: 999px;
+        background: #fafaf5;
+        color: #64736a;
+        font-size: 10px;
+        font-weight: 650;
+      }
+      .profile-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 21px;
+        padding: 11px 13px;
+        border-radius: 11px;
+        background: var(--green);
+        color: white;
+        font-weight: 750;
+        text-decoration: none;
+        transition:
+          transform 0.18s,
+          background 0.18s;
+      }
+      .profile-link:hover {
+        transform: translateY(-2px);
+        background: #244b3d;
+      }
+      .side-note {
+        margin: 14px 2px 0;
+        color: #87938b;
+        font-size: 10px;
+      }
+      .content {
+        min-width: 0;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 2px 3px 17px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .wordmark {
+        color: var(--ink);
+        font-weight: 850;
+        letter-spacing: -0.03em;
+        text-decoration: none;
+      }
+      .nav {
+        display: flex;
+        gap: 18px;
+      }
+      .nav a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .nav a:hover {
+        color: var(--green);
+      }
+      .intro {
+        position: relative;
+        display: grid;
+        min-height: 310px;
+        grid-template-columns: minmax(0, 1.2fr) minmax(190px, 0.8fr);
+        align-items: center;
+        gap: 16px;
+        overflow: hidden;
+        padding: 35px 37px;
+        border: 1px solid #e3e7dc;
+        border-radius: 22px;
+        background: linear-gradient(
+          118deg,
+          #e7efe5 0%,
+          #eff0e6 62%,
+          #f7e8db 100%
+        );
+      }
+      .intro-copy {
+        position: relative;
+        z-index: 1;
+      }
+      .intro h1 {
+        max-width: 520px;
+        margin: 10px 0 13px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(35px, 4.5vw, 54px);
+        font-weight: 500;
+        letter-spacing: -0.055em;
+        line-height: 1.04;
+      }
+      .intro h1 span {
+        color: var(--green);
+        font-style: italic;
+      }
+      .intro-copy > p:not(.eyebrow) {
+        max-width: 410px;
+        margin: 0;
+        color: #62756b;
+      }
+      .intro-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 21px;
+      }
+      .button {
+        display: inline-flex;
+        min-height: 39px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 9px 13px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        background: var(--green);
+        color: white;
+        font-size: 11px;
+        font-weight: 750;
+        text-decoration: none;
+        transition:
+          transform 0.18s,
+          background 0.18s;
+      }
+      .button:hover {
+        transform: translateY(-2px);
+        background: #244b3d;
+      }
+      .button.secondary {
+        border-color: #dce3d8;
+        background: rgba(255, 254, 250, 0.64);
+        color: var(--ink);
+      }
+      .button.secondary:hover {
+        background: var(--card);
+      }
+      .orbit {
+        position: relative;
+        display: grid;
+        width: 208px;
+        height: 208px;
+        justify-self: center;
+        place-items: center;
+        border: 1px solid rgba(49, 95, 79, 0.17);
+        border-radius: 50%;
+        transform-style: preserve-3d;
+        transition: transform 0.22s ease-out;
+        will-change: transform;
+      }
+      .orbit::before,
+      .orbit::after {
+        position: absolute;
+        content: "";
+        border: 1px solid rgba(49, 95, 79, 0.16);
+        border-radius: 50%;
+      }
+      .orbit::before {
+        inset: 20px;
+      }
+      .orbit::after {
+        inset: 42px;
+      }
+      .orbit-center {
+        z-index: 1;
+        display: grid;
+        width: 88px;
+        height: 88px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 27px;
+        background: rgba(255, 254, 250, 0.76);
+        color: var(--green);
+        font-family: Georgia, serif;
+        font-size: 34px;
+        box-shadow: 0 12px 35px rgba(45, 77, 62, 0.1);
+        transform: translateZ(28px) rotate(7deg);
+        box-shadow:
+          0 12px 35px rgba(45, 77, 62, 0.1),
+          0 22px 0 -8px rgba(255, 254, 250, 0.38),
+          0 31px 0 -14px rgba(49, 95, 79, 0.14);
+        animation: emblem-float 4.5s ease-in-out infinite;
+      }
+      .orbit-dot {
+        position: absolute;
+        z-index: 2;
+        width: 13px;
+        height: 13px;
+        border: 3px solid #eff0e6;
+        border-radius: 50%;
+        background: #c17d5d;
+        transform: translateZ(38px);
+        animation: orbit-pulse 2.8s ease-in-out infinite;
+      }
+      .orbit-dot.one {
+        top: 27px;
+        right: 36px;
+      }
+      .orbit-dot.two {
+        bottom: 34px;
+        left: 20px;
+        background: #809d77;
+        animation-delay: 0.5s;
+      }
+      .orbit-dot.three {
+        right: 13px;
+        bottom: 66px;
+        background: #c3a651;
+        animation-delay: 1s;
+      }
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 14px;
+        margin: 30px 3px 13px;
+      }
+      .section-head h2 {
+        margin: 2px 0 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 25px;
+        font-weight: 500;
+        letter-spacing: -0.03em;
+      }
+      .section-head > p {
+        margin: 0 0 3px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .projects {
+        position: relative;
+        display: grid;
+        min-height: 440px;
+        grid-template-rows: 1fr auto;
+        overflow: hidden;
+        border: 1px solid #e2e8dd;
+        border-radius: 20px;
+        background:
+          radial-gradient(
+            ellipse at 50% 50%,
+            rgba(255, 255, 255, 0.92) 0,
+            rgba(239, 241, 230, 0.82) 35%,
+            rgba(226, 235, 223, 0.92) 75%
+          ),
+          #e9eee5;
+        perspective: 1100px;
+        perspective-origin: 50% 42%;
+      }
+      .barrel-stage {
+        position: relative;
+        min-height: 365px;
+        overflow: hidden;
+        touch-action: none;
+        cursor: grab;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .barrel-stage:active {
+        cursor: grabbing;
+      }
+      .barrel-stage:focus-visible {
+        outline: 3px solid #bb805e;
+        outline-offset: -5px;
+      }
+      .barrel-stage::before,
+      .barrel-stage::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: min(68%, 430px);
+        aspect-ratio: 1;
+        border: 1px solid rgba(49, 95, 79, 0.11);
+        border-radius: 50%;
+        content: "";
+        pointer-events: none;
+        transform: translate(-50%, -50%) rotateX(72deg);
+      }
+      .barrel-stage::after {
+        width: min(88%, 560px);
+        border-style: dashed;
+        opacity: 0.62;
+        transform: translate(-50%, -50%) rotateX(72deg) rotateZ(-16deg);
+      }
+      .barrel {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        transform-style: preserve-3d;
+        transform: translate(-50%, -50%);
+        will-change: transform;
+      }
+      .barrel-project {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: min(300px, 72vw);
+        height: 235px;
+        margin: -117px 0 0 -150px;
+        transform-style: preserve-3d;
+        transition:
+          transform 800ms cubic-bezier(0.22, 0.61, 0.36, 1),
+          opacity 450ms ease,
+          filter 450ms ease;
+      }
+      .barrel-project[aria-hidden="true"] {
+        pointer-events: none;
+        visibility: hidden;
+      }
+      .barrel-project:not(.is-front) {
+        opacity: 0.78;
+        filter: saturate(0.82);
+      }
+      .barrel-project:focus-visible {
+        outline: 3px solid #bb805e;
+        outline-offset: 5px;
+      }
+      .barrel-project.is-front {
+        z-index: 10;
+        box-shadow: 0 26px 65px rgba(37, 63, 48, 0.22);
+      }
+      .barrel-project.is-step {
+        box-shadow: 0 17px 36px rgba(37, 63, 48, 0.15);
+      }
+      .barrel-project.is-step:hover {
+        z-index: 20;
+        opacity: 1;
+        filter: none;
+      }
+      .barrel-shadow {
+        position: absolute;
+        z-index: -1;
+        top: 73%;
+        left: 50%;
+        width: min(440px, 88%);
+        height: 45px;
+        border-radius: 50%;
+        background: rgba(41, 65, 52, 0.18);
+        filter: blur(18px);
+        transform: translateX(-50%);
+        pointer-events: none;
+      }
+      .barrel-hint {
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        z-index: 3;
+        padding: 6px 11px;
+        border: 1px solid rgba(49, 95, 79, 0.12);
+        border-radius: 999px;
+        background: rgba(255, 254, 250, 0.75);
+        color: #708078;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+        transform: translateX(-50%);
+        pointer-events: none;
+      }
+      .project {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--card);
+        text-decoration: none;
+        box-shadow: 0 7px 24px rgba(42, 62, 51, 0.035);
+        transform-style: preserve-3d;
+        transition:
+          box-shadow 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .project.barrel-project {
+        position: absolute;
+      }
+      .project::before {
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(
+          circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+          rgba(255, 255, 255, 0.8),
+          transparent 58%
+        );
+        content: "";
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+      .project:hover {
+        border-color: #cbd8ca;
+        box-shadow: 0 16px 34px rgba(42, 62, 51, 0.09);
+        background: #fff;
+      }
+      .project:hover::before {
+        opacity: 0.45;
+      }
+      .project > * {
+        position: relative;
+        transform: translateZ(14px);
+      }
+      .project.featured > * {
+        transform: translateZ(18px);
+      }
+      .project.featured {
+        background: #f3eee4;
+      }
+      .project-top {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .project-icon {
+        display: grid;
+        width: 37px;
+        height: 37px;
+        place-items: center;
+        border-radius: 12px;
+        background: var(--green-soft);
+        color: var(--green);
+        font-family: Georgia, serif;
+        font-size: 19px;
+        font-weight: 700;
+      }
+      .project:nth-child(3n + 2) .project-icon {
+        background: var(--peach);
+        color: #985d43;
+      }
+      .project:nth-child(3n + 3) .project-icon {
+        background: var(--lavender);
+        color: #716394;
+      }
+      .project:nth-child(4n) .project-icon {
+        background: var(--yellow);
+        color: #816a31;
+      }
+      .category {
+        padding: 5px 8px;
+        border-radius: 999px;
+        background: #f4f5ef;
+        color: #79867d;
+        font-size: 9px;
+        font-weight: 750;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .project h3 {
+        margin: 13px 0 4px;
+        font-size: 15px;
+        letter-spacing: -0.02em;
+      }
+      .project p {
+        max-width: 440px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.55;
+      }
+      .project-foot {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: auto;
+        padding-top: 14px;
+      }
+      .tech {
+        color: #87928a;
+        font-size: 9px;
+        font-weight: 650;
+      }
+      .open {
+        color: var(--green);
+        font-size: 11px;
+        font-weight: 800;
+      }
+      .barrel-controls {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        min-height: 70px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 16px;
+        border-top: 1px solid rgba(49, 95, 79, 0.12);
+        background: rgba(255, 254, 250, 0.82);
+        backdrop-filter: blur(12px);
+      }
+      .barrel-readout {
+        min-width: 0;
+      }
+      .barrel-readout strong {
+        display: block;
+        overflow: hidden;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .barrel-readout span {
+        color: var(--muted);
+        font-size: 10px;
+      }
+      .barrel-actions {
+        display: flex;
+        flex: none;
+        align-items: center;
+        gap: 7px;
+      }
+      .barrel-actions button {
+        display: inline-grid;
+        min-width: 35px;
+        min-height: 35px;
+        place-items: center;
+        padding: 7px 10px;
+        border: 1px solid #dfe6db;
+        border-radius: 10px;
+        background: var(--card);
+        color: var(--ink);
+        font: inherit;
+        font-size: 11px;
+        font-weight: 750;
+        cursor: pointer;
+        transition:
+          transform 0.18s ease,
+          background 0.18s ease,
+          color 0.18s ease;
+      }
+      .barrel-actions button:hover {
+        transform: translateY(-2px);
+        background: var(--green);
+        color: white;
+      }
+      .barrel-actions button:focus-visible {
+        outline: 3px solid #bb805e;
+        outline-offset: 3px;
+      }
+      .barrel-actions .spin-button {
+        padding-inline: 12px;
+      }
+      .desktop-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-top: 16px;
+        padding: 18px 20px;
+        border: 1px solid #e6e3d7;
+        border-radius: 16px;
+        background: #eeeee5;
+      }
+      .desktop-card h3 {
+        margin: 1px 0 3px;
+        font-family: Georgia, serif;
+        font-size: 18px;
+        font-weight: 500;
+      }
+      .desktop-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .desktop-card a {
+        flex: none;
+        color: var(--green);
+        font-size: 11px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+      footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 23px 3px 0;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+        color: #87928a;
+        font-size: 10px;
+      }
+      html.portfolio-opening .profile {
+        animation: opening-profile 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      }
+      html.portfolio-opening .topbar {
+        animation: opening-rise 0.65s 0.12s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      }
+      html.portfolio-opening .intro {
+        animation: opening-rise 0.8s 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      }
+      html.portfolio-opening .section-head {
+        animation: opening-rise 0.65s 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      }
+      html.portfolio-opening .projects {
+        animation: opening-rise 0.75s 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      }
+      html.portfolio-opening .barrel {
+        animation: barrel-roll-in 1.8s 0.35s cubic-bezier(0.16, 0.8, 0.2, 1)
+          both;
+      }
+      html.portfolio-opening .desktop-card {
+        animation: opening-rise 0.65s 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      }
+      html.portfolio-opening footer {
+        animation: opening-rise 0.65s 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      }
+      @keyframes opening-profile {
+        from {
+          opacity: 0;
+          transform: perspective(900px) rotateY(-24deg) translateY(24px)
+            scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: perspective(900px) rotateY(0) translateY(0) scale(1);
+        }
+      }
+      @keyframes opening-rise {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes barrel-roll-in {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -50%) rotateX(18deg) scale(0.78);
+        }
+        70% {
+          opacity: 1;
+          transform: translate(-50%, -50%) rotateX(-4deg) scale(1.025);
+        }
+        100% {
+          opacity: 1;
+          transform: translate(-50%, -50%) rotateX(0) scale(1);
+        }
+      }
+      @keyframes initials-float {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-5deg);
+        }
+        50% {
+          transform: translateY(-7px) rotate(-2deg);
+        }
+      }
+      @keyframes emblem-float {
+        0%,
+        100% {
+          translate: 0 0;
+        }
+        50% {
+          translate: 0 -8px;
+        }
+      }
+      @keyframes orbit-pulse {
+        0%,
+        100% {
+          scale: 1;
+        }
+        50% {
+          scale: 1.35;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: 235px minmax(0, 1fr);
+          gap: 15px;
+        }
+        .intro {
+          grid-template-columns: 1fr;
+          padding: 27px;
+        }
+        .orbit {
+          position: absolute;
+          right: -70px;
+          bottom: -85px;
+          opacity: 0.48;
+        }
+      }
+      @media (max-width: 640px) {
+        .layout {
+          width: min(100% - 26px, 520px);
+          grid-template-columns: 1fr;
+          padding-top: 14px;
+        }
+        .profile {
+          position: relative;
+          top: auto;
+          display: grid;
+          grid-template-columns: 92px minmax(0, 1fr);
+        }
+        .profile-art {
+          min-height: 100%;
+        }
+        .profile-art::before {
+          width: 125px;
+          height: 125px;
+        }
+        .profile-art::after {
+          width: 160px;
+          height: 160px;
+        }
+        .initials {
+          width: 59px;
+          height: 59px;
+          border-radius: 20px;
+          font-size: 29px;
+        }
+        .profile-body {
+          padding: 15px;
+        }
+        .profile h2 {
+          font-size: 24px;
+        }
+        .profile-copy {
+          font-size: 11px;
+        }
+        .divider,
+        .label,
+        .chips,
+        .profile-link,
+        .side-note {
+          display: none;
+        }
+        .topbar {
+          margin: 3px 2px 13px;
+        }
+        .intro {
+          min-height: 285px;
+          padding: 25px 22px;
+        }
+        .intro h1 {
+          font-size: 42px;
+        }
+        .orbit {
+          right: -90px;
+          bottom: -110px;
+        }
+        .section-head {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 2px;
+          margin-top: 25px;
+        }
+        .projects {
+          min-height: 410px;
+        }
+        .barrel-stage {
+          min-height: 340px;
+        }
+        .barrel {
+          top: 50%;
+        }
+        .barrel-project {
+          height: 230px;
+          margin-top: -115px;
+        }
+        .barrel-controls {
+          min-height: 68px;
+          padding: 9px 10px;
+        }
+        .barrel-actions {
+          gap: 5px;
+        }
+      }
+      @media (max-width: 390px) {
+        .profile {
+          grid-template-columns: 70px minmax(0, 1fr);
+        }
+        .profile-body {
+          padding: 12px;
+        }
+        .topbar {
+          font-size: 10px;
+        }
+        .nav {
+          gap: 11px;
+        }
+        .intro h1 {
+          font-size: 36px;
+        }
+        .barrel-project {
+          width: min(280px, 76vw);
+          margin-left: min(-140px, -38vw);
+        }
+        .barrel-actions .spin-button {
+          font-size: 0;
+        }
+        .barrel-actions .spin-button::after {
+          content: "↻";
+          font-size: 17px;
+        }
+        .desktop-card {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 10px;
+        }
+        footer {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        html.portfolio-opening .profile,
+        html.portfolio-opening .topbar,
+        html.portfolio-opening .intro,
+        html.portfolio-opening .section-head,
+        html.portfolio-opening .projects,
+        html.portfolio-opening .barrel,
+        html.portfolio-opening .desktop-card,
+        html.portfolio-opening footer {
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#projects">Skip to projects</a>
+    <div class="layout">
+      <aside class="profile" id="about" aria-label="About Tanishq Bhandari">
+        <div class="profile-art" aria-hidden="true">
+          <div class="initials">T</div>
+        </div>
+        <div class="profile-body">
+          <p class="eyebrow">A curious builder</p>
+          <h2>Tanishq Bhandari</h2>
+          <p class="profile-copy">
+            Learning by making useful things, one project at a time.
+          </p>
+          <div class="divider"></div>
+          <p class="label">Things I like exploring</p>
+          <div class="chips" aria-label="Areas of interest">
+            <span class="chip">Web apps</span
+            ><span class="chip">Data tools</span
+            ><span class="chip">Useful ideas</span>
+          </div>
+          <a class="profile-link" href="#projects"
+            ><span>Browse the projects</span
+            ><span aria-hidden="true">↗</span></a
+          >
+          <p class="side-note">
+            A small collection of experiments and practical builds.
+          </p>
+        </div>
+      </aside>
+      <main class="content">
+        <header class="topbar">
+          <a class="wordmark" href="#top" aria-label="Back to top"
+            >PROJECTS & EXPERIMENTS</a
+          >
+          <nav class="nav" aria-label="Main navigation">
+            <a href="#about">About</a><a href="#projects">Projects</a
+            ><a href="#desktop">Desktop</a>
+          </nav>
+        </header>
+        <section class="intro" id="top">
+          <div class="intro-copy">
+            <p class="eyebrow">A little curiosity, a lot of building</p>
+            <h1>Ideas become<br /><span>things you can use.</span></h1>
+            <p>
+              A growing shelf of web apps, data explorations, and small tools.
+              Each one is a chance to learn by building something real and
+              approachable.
+            </p>
+            <div class="intro-actions">
+              <a class="button" href="#projects"
+                >Explore the collection <span aria-hidden="true">↓</span></a
+              >
+              <a class="button secondary" href="./ashapura-enterprises.html"
+                >Visit Ashapura Enterprises <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </div>
+          <div class="orbit" aria-hidden="true">
+            <span class="orbit-dot one"></span
+            ><span class="orbit-dot two"></span
+            ><span class="orbit-dot three"></span>
+            <div class="orbit-center">✳</div>
+          </div>
+        </section>
+        <section id="projects" aria-labelledby="projects-title">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">The project barrel</p>
+              <h2 id="projects-title">Pick a project. Take it for a spin.</h2>
+            </div>
+            <p>11 browser projects · no setup required</p>
+          </div>
+          <div
+            class="projects"
+            role="group"
+            aria-label="Project collection"
+            aria-roledescription="3D project carousel"
+          >
+            <div
+              class="barrel-stage"
+              id="barrel-stage"
+              tabindex="0"
+              role="group"
+              aria-label="Stepped project carousel. Click a visible project, use left and right arrow keys, drag, or use the controls below."
+            >
+              <span class="barrel-hint" aria-hidden="true"
+                >CLICK A PROJECT · DRAG TO ROLL · ← →</span
+              >
+              <span class="barrel-shadow" aria-hidden="true"></span>
+              <div class="barrel" id="project-barrel">
+                <a class="project featured" href="ashapura-enterprises.html">
+                  <div class="project-top">
+                    <span class="project-icon" aria-hidden="true">A</span
+                    ><span class="category">Business website</span>
+                  </div>
+                  <h3>Ashapura Enterprises</h3>
+                  <p>
+                    A warm, clear introduction to the Karnataka distributor of
+                    HELLO GOLD Sweet Betel Nut Pieces.
+                  </p>
+                  <div class="project-foot">
+                    <span class="tech">Brand story · Product showcase</span
+                    ><span class="open">Visit website ↗</span>
+                  </div>
+                </a>
+                <a class="project" href="personal-finance-dashboard.html">
+                  <div class="project-top">
+                    <span class="project-icon" aria-hidden="true">₹</span
+                    ><span class="category">Finance</span>
+                  </div>
+                  <h3>Pocketwise</h3>
+                  <p>
+                    Track spending, set budgets, and bring a sample CSV
+                    statement into a clear dashboard.
+                  </p>
+                  <div class="project-foot">
+                    <span class="tech">CSV · Local data</span
+                    ><span class="open">Open ↗</span>
+                  </div>
+                </a>
+                <a class="project" href="college-portal.html">
+                  <div class="project-top">
+                    <span class="project-icon" aria-hidden="true">C</span
+                    ><span class="category">Education</span>
+                  </div>
+                  <h3>Campusly</h3>
+                  <p>
+                    A college portal demo with distinct student and faculty
+                    views, notices, and sample records.
+                  </p>
+                  <div class="project-foot">
+                    <span class="tech">Role-based views · Demo</span
+                    ><span class="open">Open ↗</span>
+                  </div>
+                </a>
+                <a class="project" href="real-time-chat.html">
+                  <div class="project-top">
+                    <span class="project-icon" aria-hidden="true">#</span
+                    ><span class="category">Communication</span>
+                  </div>
+                  <h3>Gather</h3>
+                  <p>
+                    A lightweight chat-room demo with local message history and
+                    same-browser tab sync.
+                  </p>
+                  <div class="project-foot">
+                    <span class="tech">Chat · Browser tabs</span
+                    ><span class="open">Open ↗</span>
+                  </div>
+                </a>
+                <a class="project" href="public-dataset-dashboard.html">
+                  <div class="project-top">
+                    <span class="project-icon" aria-hidden="true">↗</span
+                    ><span class="category">Data</span>
+                  </div>
+                  <h3>Fieldnotes</h3>
+                  <p>
+                    Explore illustrative Karnataka crop-yield samples with
+                    interactive district comparisons.
+                  </p>
+                  <div class="project-foot">
+                    <span class="tech">Data viz · Filters</span
+                    ><span class="open">Explore ↗</span>
+                  </div>
+                </a>
+                <a class="project" href="student-performance-predictor.html">
+                  <div class="project-top">
+                    <span class="project-icon" aria-hidden="true">◎</span
+                    ><span class="category">Learning tool</span>
+                  </div>
+                  <h3>Pathfinder</h3>
+                  <p>
+                    An educational readiness estimator with an explainable,
+                    locally calculated formula.
+                  </p>
+                  <div class="project-foot">
+                    <span class="tech">Interactive · Illustrative</span
+                    ><span class="open">Try it ↗</span>
+                  </div>
+                </a>
+                <a class="project" href="inventory-billing.html">
+                  <div class="project-top">
+                    <span class="project-icon" aria-hidden="true">▤</span
+                    ><span class="category">Retail</span>
+                  </div>
+                  <h3>Stockroom</h3>
+                  <p>
+                    Manage a sample product shelf, build an invoice, and update
+                    browser-local stock.
+                  </p>
+                  <div class="project-foot">
+                    <span class="tech">Inventory · Billing</span
+                    ><span class="open">Open ↗</span>
+                  </div>
+                </a>
+                <a class="project" href="resume-parser.html">
+                  <div class="project-top">
+                    <span class="project-icon" aria-hidden="true">✓</span
+                    ><span class="category">Career</span>
+                  </div>
+                  <h3>Matchwork</h3>
+                  <p>
+                    Compare a text-based PDF resume with a job description using
+                    an explainable checklist.
+                  </p>
+                  <div class="project-foot">
+                    <span class="tech">PDF.js · Needs internet</span
+                    ><span class="open">Review ↗</span>
+                  </div>
+                </a>
+                <a class="project" href="travel-planner.html">
+                  <div class="project-top">
+                    <span class="project-icon" aria-hidden="true">⌖</span
+                    ><span class="category">Travel</span>
+                  </div>
+                  <h3>Wayfinder</h3>
+                  <p>
+                    Bring destination weather, nearby places, and an indicative
+                    exchange rate together.
+                  </p>
+                  <div class="project-foot">
+                    <span class="tech">Live public APIs · Internet</span
+                    ><span class="open">Explore ↗</span>
+                  </div>
+                </a>
+                <a class="project" href="markdown-blog.html">
+                  <div class="project-top">
+                    <span class="project-icon" aria-hidden="true">✎</span
+                    ><span class="category">Writing</span>
+                  </div>
+                  <h3>Fieldnotes Journal</h3>
+                  <p>
+                    Write, preview, and publish Markdown stories saved in this
+                    browser.
+                  </p>
+                  <div class="project-foot">
+                    <span class="tech">Markdown · Local drafts</span
+                    ><span class="open">Read & write ↗</span>
+                  </div>
+                </a>
+                <a class="project" href="ecommerce-inventory-planner.html">
+                  <div class="project-top">
+                    <span class="project-icon" aria-hidden="true">▦</span
+                    ><span class="category">Operations</span>
+                  </div>
+                  <h3>Supplyline</h3>
+                  <p>
+                    Connect sample suppliers, batches, stock alerts, and a
+                    repeatable reorder plan.
+                  </p>
+                  <div class="project-foot">
+                    <span class="tech">Inventory · Planning</span
+                    ><span class="open">Open ↗</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="barrel-controls">
+              <div class="barrel-readout" aria-live="polite" aria-atomic="true">
+                <strong id="barrel-title">Ashapura Enterprises</strong>
+                <span id="barrel-position">Project 1 of 11</span>
+              </div>
+              <div class="barrel-actions" aria-label="Project barrel controls">
+                <button
+                  id="barrel-previous"
+                  type="button"
+                  aria-label="Previous project"
+                >
+                  ←
+                </button>
+                <button
+                  id="barrel-spin"
+                  class="spin-button"
+                  type="button"
+                  aria-pressed="false"
+                >
+                  Spin projects
+                </button>
+                <button
+                  id="barrel-next"
+                  type="button"
+                  aria-label="Next project"
+                >
+                  →
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          class="desktop-card"
+          id="desktop"
+          aria-labelledby="desktop-title"
+        >
+          <div>
+            <p class="eyebrow">A desktop-side experiment</p>
+            <h3 id="desktop-title">System Resource Monitor</h3>
+            <p>
+              A small Python utility for watching CPU, memory, and disk usage on
+              your computer.
+            </p>
+          </div>
+          <a href="system-monitor.py">View Python source ↗</a>
+        </section>
+        <footer>
+          <span>Built to learn, designed to be explored.</span
+          ><span>Browser demos · Local sample data</span>
+        </footer>
+      </main>
+    </div>
+    <script>
+      (() => {
+        const reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        const barrel = document.querySelector("#project-barrel");
+        const stage = document.querySelector("#barrel-stage");
+        const cards = [...barrel.querySelectorAll(".project")];
+        const title = document.querySelector("#barrel-title");
+        const position = document.querySelector("#barrel-position");
+        const spinButton = document.querySelector("#barrel-spin");
+        const step = 360 / cards.length;
+        let activeIndex = 0;
+        let spinTimer = 0;
+        let dragStart = null;
+        let dragging = false;
+        let dragOffset = 0;
+        cards.forEach((card) => {
+          card.classList.add("barrel-project");
+          card.draggable = false;
+        });
+
+        function wrap(index) {
+          return ((index % cards.length) + cards.length) % cards.length;
+        }
+
+        function relativePosition(index) {
+          const offset = wrap(index - activeIndex);
+          return offset > cards.length / 2 ? offset - cards.length : offset;
+        }
+
+        function layoutBarrel() {
+          const width = stage.clientWidth;
+          if (!width) return;
+          const cardWidth = Math.min(300, width * (width < 500 ? 0.76 : 0.38));
+          const stepX = Math.min(180, Math.max(108, width * 0.22));
+          cards.forEach((card, index) => {
+            const offset = relativePosition(index);
+            const distance = Math.abs(offset);
+            const visible = distance <= 2;
+            const scale = distance === 0 ? 1 : distance === 1 ? 0.88 : 0.76;
+            card.style.width = `${cardWidth}px`;
+            card.style.marginLeft = `${-cardWidth / 2}px`;
+            card.style.zIndex = String(8 - distance);
+            card.style.transform = `translate3d(${offset * stepX}px, ${-offset * 38}px, ${distance === 0 ? 35 : 0}px) scale(${scale})`;
+            card.classList.toggle("is-step", visible && distance > 0);
+            card.style.visibility = visible ? "visible" : "hidden";
+            card.style.pointerEvents = visible ? "auto" : "none";
+            card.setAttribute("aria-hidden", String(!visible));
+            card.inert = !visible;
+          });
+        }
+
+        function updateReadout() {
+          const current = cards[activeIndex];
+          title.textContent = current.querySelector("h3").textContent;
+          position.textContent = `Project ${activeIndex + 1} of ${cards.length}`;
+          cards.forEach((card, index) => {
+            const isFront = index === activeIndex;
+            card.classList.toggle("is-front", isFront);
+          });
+          layoutBarrel();
+        }
+
+        function move(direction) {
+          activeIndex = wrap(activeIndex + direction);
+          updateReadout();
+        }
+
+        function stopSpin() {
+          window.clearInterval(spinTimer);
+          spinTimer = 0;
+          spinButton.textContent = "Spin projects";
+          spinButton.setAttribute("aria-pressed", "false");
+        }
+
+        function startSpin() {
+          if (spinTimer) {
+            stopSpin();
+            return;
+          }
+          spinButton.textContent = "Pause spin";
+          spinButton.setAttribute("aria-pressed", "true");
+          move(1);
+          spinTimer = window.setInterval(
+            () => move(1),
+            reduceMotion ? 3000 : 1750,
+          );
+        }
+
+        document
+          .querySelector("#barrel-previous")
+          .addEventListener("click", () => {
+            stopSpin();
+            move(-1);
+          });
+        document.querySelector("#barrel-next").addEventListener("click", () => {
+          stopSpin();
+          move(1);
+        });
+        spinButton.addEventListener("click", startSpin);
+        stage.addEventListener("keydown", (event) => {
+          if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+          event.preventDefault();
+          stopSpin();
+          move(event.key === "ArrowRight" ? 1 : -1);
+        });
+        stage.addEventListener("pointerdown", (event) => {
+          if (event.button !== 0) return;
+          dragStart = { x: event.clientX, pointerId: event.pointerId };
+          dragging = false;
+          dragOffset = 0;
+        });
+        stage.addEventListener("pointermove", (event) => {
+          if (!dragStart) return;
+          const delta = event.clientX - dragStart.x;
+          if (Math.abs(delta) > 6 && !dragging) {
+            dragging = true;
+            stage.setPointerCapture(dragStart.pointerId);
+          }
+          if (!dragging) return;
+          stopSpin();
+          dragOffset = delta;
+          barrel.style.transition = "none";
+          barrel.style.transform = `translate(calc(-50% + ${dragOffset}px), -50%)`;
+        });
+        stage.addEventListener("pointerup", () => {
+          if (!dragStart) return;
+          if (dragging) {
+            barrel.style.transition = reduceMotion
+              ? "none"
+              : "transform 360ms cubic-bezier(.22,.61,.36,1)";
+            barrel.style.transform = "translate(-50%, -50%)";
+            if (Math.abs(dragOffset) > 28) move(dragOffset < 0 ? 1 : -1);
+            stage.dataset.dragged = "true";
+            window.setTimeout(() => delete stage.dataset.dragged, 0);
+          }
+          dragStart = null;
+          dragging = false;
+          dragOffset = 0;
+        });
+        stage.addEventListener("pointercancel", () => {
+          dragStart = null;
+          dragging = false;
+          dragOffset = 0;
+          barrel.style.transition = "";
+          barrel.style.transform = "translate(-50%, -50%)";
+        });
+        stage.addEventListener("dragstart", (event) => event.preventDefault());
+        stage.addEventListener(
+          "click",
+          (event) => {
+            if (stage.dataset.dragged === "true") {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+          },
+          true,
+        );
+
+        layoutBarrel();
+        updateReadout();
+        if ("ResizeObserver" in window)
+          new ResizeObserver(layoutBarrel).observe(stage);
+        else window.addEventListener("resize", layoutBarrel);
+        if (reduceMotion)
+          document.documentElement.classList.remove("portfolio-opening");
+        else {
+          barrel.addEventListener(
+            "animationend",
+            () => {
+              document.documentElement.classList.remove("portfolio-opening");
+            },
+            { once: true },
+          );
+        }
+
+        const hero = document.querySelector(".intro");
+        const orbit = document.querySelector(".orbit");
+        if (
+          !reduceMotion &&
+          window.matchMedia("(hover: hover) and (pointer: fine)").matches
+        ) {
+          hero.addEventListener("pointermove", (event) => {
+            const bounds = hero.getBoundingClientRect();
+            const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+            const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+            orbit.style.transform = `rotateX(${y * -12}deg) rotateY(${x * 14}deg)`;
+          });
+          hero.addEventListener("pointerleave", () => {
+            orbit.style.transform = "";
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

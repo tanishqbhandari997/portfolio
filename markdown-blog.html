@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A browser-local Markdown writing and publishing demo.">
+    <title>Fieldnotes Journal | Markdown Studio</title>
+    <style>
+      * {
+        box-sizing:border-box
+      }
+      body {
+        margin:0;
+        background:#faf9f6;
+        color:#29312b;
+        font:15px/1.65 Inter,Segoe UI,Arial,sans-serif
+      }
+      .wrap {
+        max-width:1100px;
+        margin:auto;
+        padding:26px 20px
+      }
+      .top {
+        display:flex;
+        justify-content:space-between;
+        align-items:center
+      }
+      .brand {
+        font:800 22px Georgia,serif
+      }
+      .brand span {
+        color:#74876b
+      }
+      .tag {
+        font-size:11px;
+        color:#839080
+      }
+      .hero {
+        padding:42px 0 28px;
+        border-bottom:1px solid #e7e4dc
+      }
+      .hero small {
+        color:#657c5a;
+        text-transform:uppercase;
+        letter-spacing:.15em;
+        font-size:10px;
+        font-weight:800
+      }
+      .hero h1 {
+        font:clamp(32px,4vw,42px)/1.12 Georgia,serif;
+        margin:10px 0
+      }
+      .hero p {
+        color:#748076;
+        max-width:600px
+      }
+      .columns {
+        display:grid;
+        grid-template-columns:260px 1fr;
+        gap:28px;
+        margin-top:25px
+      }
+      .side,.editor,.article {
+        background:white;
+        border:1px solid #e9e6dd;
+        border-radius:11px;
+        padding:17px
+      }
+      .side h2,.editor h2 {
+        font-size:14px;
+        margin:0 0 12px
+      }
+      .filters {
+        display:flex;
+        gap:6px;
+        flex-wrap:wrap;
+        margin:10px 0 17px
+      }
+      .chip {
+        background:#edf2e9;
+        color:#52664c;
+        border-radius:20px;
+        padding:5px 9px;
+        font-size:10px;
+        cursor:pointer;
+        border:0
+      }
+      .post-card {
+        padding:12px 0;
+        border-bottom:1px solid #efede7;
+        cursor:pointer
+      }
+      .post-card:last-child {
+        border:0
+      }
+      .post-card strong {
+        font:17px Georgia,serif
+      }
+      .post-card small {
+        display:block;
+        color:#859082;
+        font-size:10px
+      }
+      .empty {
+        color:#818a80;
+        font-size:12px
+      }
+      .article {
+        padding:28px;
+        min-height:260px
+      }
+      .article h1 {
+        font:clamp(26px,3vw,34px)/1.15 Georgia,serif;
+        margin:0 0 8px
+      }
+      .article .meta {
+        color:#829080;
+        font-size:11px;
+        margin-bottom:22px
+      }
+      .article-body h1,.article-body h2,.article-body h3 {
+        font-family:Georgia,serif
+      }
+      .article-body img {
+        max-width:100%
+      }
+      .article-body pre {
+        background:#242c29;
+        color:#eef3ea;
+        padding:13px;
+        border-radius:8px;
+        overflow:auto
+      }
+      .article-body blockquote {
+        border-left:3px solid #829977;
+        padding-left:14px;
+        color:#788375
+      }
+      .controls {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:10px;
+        margin-bottom:10px
+      }
+      .controls button,button.primary {
+        border:0;
+        border-radius:7px;
+        padding:9px 12px;
+        background:#395744;
+        color:white;
+        font:inherit;
+        font-weight:700;
+        cursor:pointer
+      }
+      .controls button.secondary {
+        background:#edf1eb;
+        color:#36493a
+      }
+      .manager {
+        margin-top:20px
+      }
+      .manager summary {
+        cursor:pointer;
+        font-weight:700;
+        padding:7px 0
+      }
+      .editor {
+        margin-top:8px
+      }
+      .editor input,.editor textarea,.editor select {
+        width:100%;
+        padding:10px;
+        border:1px solid #e1e4da;
+        border-radius:7px;
+        font:inherit;
+        margin:5px 0 12px
+      }
+      .editor textarea {
+        min-height:220px;
+        font:13px/1.55 ui-monospace,Consolas,monospace
+      }
+      .editor label {
+        font-size:11px;
+        font-weight:700
+      }
+      .status {
+        font-size:11px;
+        color:#738074;
+        min-height:20px
+      }
+      .status.error {
+        color:#ae3535
+      }
+      .danger {
+        background:#a3473e!important
+      }
+      @media(max-width:760px) {
+        .wrap {
+          padding:18px 12px
+        }
+        .columns {
+          grid-template-columns:1fr
+        }
+        .hero {
+          padding-top:30px
+        }
+        .hero h1 {
+          font-size:clamp(28px,7vw,34px)
+        }
+        .article {
+          padding:20px
+        }
+      }
+</style>
+  </head>
+  <body>
+    <script src="./portfolio-nav.js"></script>
+    <script src="./launchpad-helper.js"></script>
+    <main class="wrap">
+      <header class="top">
+        <div class="brand">
+          Fieldnotes <span>Journal</span>
+        </div>
+        <div class="tag">
+          A quiet corner for considered ideas
+        </div>
+      </header>
+      <section class="hero">
+        <small>Stories · ideas · notes</small>
+        <h1>
+          Write it down.<br>Make it matter.
+        </h1>
+        <p>
+          A small Markdown-powered journal. Read public writing, or choose a demo profile to draft, preview, publish, and manage posts stored in this browser.
+        </p>
+      </section>
+      <section class="columns">
+        <aside class="side">
+          <h2>
+            Browse writing
+          </h2>
+          <input id="search" placeholder="Search titles and tags" aria-label="Search posts" style="width:100%;padding:9px;border:1px solid #e1e4da;border-radius:7px">
+          <div class="filters" id="tags">
+          </div>
+          <div id="posts">
+          </div>
+        </aside>
+        <section>
+          <article class="article" id="article">
+            <p class="empty">
+              Choose a published story to read.
+            </p>
+          </article>
+          <details class="manager" id="manager">
+            <summary>
+              Open your writing studio
+            </summary>
+            <form class="editor" id="editor">
+              <h2 id="editor-title">
+                Create a post
+              </h2>
+              <input id="post-title" maxlength="160" placeholder="Post title" required><input id="post-tags" maxlength="300" placeholder="Tags, separated by commas"><textarea id="post-markdown" maxlength="50000" placeholder="# Your draft&#10;&#10;Write in Markdown here." required></textarea><label for="post-status">Publish state</label><select id="post-status"><option value="draft">Save as draft</option><option value="published">Publish publicly</option></select>
+              <div class="controls">
+                <button type="submit" class="primary" id="save">Save draft</button><button type="button" class="secondary" id="new-post">New post</button>
+              </div>
+              <div class="controls" id="edit-controls" hidden>
+                <span id="reading-time" class="tag"></span><button type="button" id="delete-post" class="danger">Delete post</button>
+              </div>
+              <div class="status" id="blog-status" role="status" aria-live="polite">
+              </div>
+            </form>
+          </details>
+        </section>
+      </section>
+    </main>
+    <script>
+let posts=[],drafts=[],activeTag="all",editing=null;const list=document.querySelector("#posts"),article=document.querySelector("#article"),status=document.querySelector("#blog-status"),search=document.querySelector("#search");
+function readingTime(markdown){return Math.max(1,Math.ceil(markdown.trim().split(/\s+/).filter(Boolean).length/200))}
+function renderTags(){const unique=[...new Set(posts.flatMap(post=>post.tags))].sort(),box=document.querySelector("#tags");box.replaceChildren();const all=document.createElement("button");all.className="chip";all.textContent="All writing";all.addEventListener("click",()=>{activeTag="all";renderPosts()});box.append(all);unique.forEach(tag=>{const button=document.createElement("button");button.className="chip";button.textContent=tag;button.addEventListener("click",()=>{activeTag=tag;renderPosts()});box.append(button)})}
+function renderPosts(){list.replaceChildren();const term=search.value.trim().toLowerCase(),visible=posts.filter(post=>(activeTag==="all"||post.tags.includes(activeTag))&&(`${post.title} ${post.tags.join(" ")}`.toLowerCase().includes(term)));if(!visible.length){const empty=document.createElement("p");empty.className="empty";empty.textContent="No published posts match that filter.";list.append(empty);return}visible.forEach(post=>{const card=document.createElement("div"),title=document.createElement("strong"),meta=document.createElement("small");card.className="post-card";title.textContent=post.title;meta.textContent=`${post.author} · ${readingTime(post.markdown)} min read · ${post.tags.join(", ")}`;card.append(title,meta);card.addEventListener("click",()=>showPost(post));list.append(card)})}
+function showPost(post){article.replaceChildren();const title=document.createElement("h1"),meta=document.createElement("div"),body=document.createElement("div");title.textContent=post.title;meta.className="meta";meta.textContent=`${post.author} · ${new Date(post.updated_at).toLocaleDateString()} · ${readingTime(post.markdown)} min read`;body.className="article-body";body.innerHTML=post.html;article.append(title,meta,body)}
+async function loadPublic(){try{const result=await Launchpad.api("/api/blog/posts");posts=result.posts;renderTags();renderPosts()}catch(error){list.textContent=`Published posts unavailable: ${error.message}`}}
+async function loadMine(){if(!Launchpad.user){drafts=[];return}try{drafts=(await Launchpad.api("/api/blog/posts?mine=1")).posts;renderManager()}catch(error){status.textContent=error.message;status.className="status error"}}
+function renderManager(){const manager=document.querySelector("#manager");if(!Launchpad.user){manager.open=false;manager.querySelector("summary").textContent="Choose a demo profile above to open your writing studio";manager.querySelector("form").hidden=true;return}manager.querySelector("summary").textContent=`Your writing studio · ${drafts.length} post(s)`;manager.querySelector("form").hidden=false}
+function resetEditor(){editing=null;document.querySelector("#editor-title").textContent="Create a post";document.querySelector("#post-title").value="";document.querySelector("#post-tags").value="";document.querySelector("#post-markdown").value="";document.querySelector("#post-status").value="draft";document.querySelector("#save").textContent="Save draft";document.querySelector("#edit-controls").hidden=true;status.textContent="";status.className="status"}
+document.querySelector("#editor").addEventListener("submit",async event=>{event.preventDefault();if(!Launchpad.user){status.textContent="Choose a demo profile above to save a post.";return}const payload={title:document.querySelector("#post-title").value,markdown:document.querySelector("#post-markdown").value,tags:document.querySelector("#post-tags").value.split(",").map(tag=>tag.trim()).filter(Boolean),status:document.querySelector("#post-status").value};try{const result=await Launchpad.api(editing?`/api/blog/posts/${editing.id}`:"/api/blog/posts",{method:editing?"PUT":"POST",body:JSON.stringify(payload)});status.className="status";status.textContent=`${result.status==="published"?"Published":"Saved draft"}: ${result.title}`;await loadMine();await loadPublic();if(editing){editing={...editing,...payload};document.querySelector("#reading-time").textContent=`${readingTime(payload.markdown)} min read`}}catch(error){status.className="status error";status.textContent=error.message}});
+document.querySelector("#new-post").addEventListener("click",resetEditor);document.querySelector("#post-status").addEventListener("change",event=>document.querySelector("#save").textContent=event.target.value==="published"?"Publish post":"Save draft");document.querySelector("#delete-post").addEventListener("click",async()=>{if(!editing)return;try{await Launchpad.api(`/api/blog/posts/${editing.id}`,{method:"DELETE"});resetEditor();await loadMine();await loadPublic()}catch(error){status.className="status error";status.textContent=error.message}});
+search.addEventListener("input",renderPosts);Launchpad.sessionReady.then(user=>{if(user)loadMine()});Launchpad.onSessionChange(user=>{resetEditor();loadMine();if(!user){drafts=[];renderManager()}});
+document.querySelector("#posts").addEventListener("dblclick",event=>{if(!Launchpad.user)return;const card=event.target.closest(".post-card"),post=card&&posts.find(item=>item.title===card.querySelector("strong").textContent);if(!post||post.author_id!==Launchpad.user.id)return;editing=post;document.querySelector("#editor-title").textContent="Edit post";document.querySelector("#post-title").value=post.title;document.querySelector("#post-tags").value=post.tags.join(", ");document.querySelector("#post-markdown").value=post.markdown;document.querySelector("#post-status").value=post.status;document.querySelector("#save").textContent=post.status==="published"?"Update post":"Save draft";document.querySelector("#edit-controls").hidden=false;document.querySelector("#reading-time").textContent=`${readingTime(post.markdown)} min read`;document.querySelector("#manager").open=true});
+loadPublic();
+</script>
+  </body>
+</html>
